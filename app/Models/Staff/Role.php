@@ -2,8 +2,8 @@
 
 namespace App\Models\Staff;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Staff\User;
 
 class Role extends Model
 {

@@ -5,12 +5,13 @@ namespace App\Models\Staff;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Cache;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
  * @property string username
  * @property string email
- * @property array data
+ * @property mixed tpl_data
  * @property string password
  */
 class User extends Authenticatable
@@ -20,7 +21,7 @@ class User extends Authenticatable
     protected $fillable = [
         'username',
         'email',
-        'data',
+        'tpl_data',
         'password',
     ];
 
@@ -33,11 +34,16 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    protected $with = ['roles'];
+    protected $appends = ['fullname', 'permissions'];
 
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'user_roles', 'user_id', 'role_id');
+    }
+
+    public function isSuperuser()
+    {
+        return in_array($this->username, explode(',', config('crm.superusers')));
     }
 
     public function hasPermission(string $permission): bool
@@ -48,5 +54,47 @@ class User extends Authenticatable
             }
         }
         return false;
+    }
+
+    public function getTplValue(string $slug)
+    {
+        $tplData = $this->tpl_data;
+
+        if (is_string($tplData)) {
+            $tplData = json_decode($tplData, true);
+        }
+
+        if (is_array($tplData) && array_key_exists($slug, $tplData)) {
+            return $tplData[$slug];
+        }
+
+        return null;
+    }
+
+    public function getFullnameAttribute(): string
+    {
+        $value = $this->getTplValue('lastname') . " " . $this->getTplValue('firstname') . " " .
+            $this->getTplValue('middlename');
+
+        if (!trim($value)) {
+            $value = $this->username;
+        }
+
+        return $value;
+    }
+
+    public function getPermissionsAttribute()
+    {
+        if ($this->isSuperuser()) {
+            return Permission::all()->pluck('permission');
+        }
+        $roles = $this->roles;
+        $permissions = [];
+        foreach ($roles as $role) {
+            foreach ($role->permissions()->pluck('permission') as $permission) {
+                array_push($permissions, $permission);
+            }
+        }
+        return array_unique($permissions);
     }
 }
