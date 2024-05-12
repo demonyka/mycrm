@@ -37,7 +37,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'app' => [
                 'name' => config('app.name'),
-            ]
+            ],
         ];
     }
 }

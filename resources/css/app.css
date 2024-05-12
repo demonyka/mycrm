@@ -3,7 +3,9 @@
     --gray2: #3f3f3f;
     --gray3: #828282;
     --gray4: #BDBDBD;
+    --gray5: #F2F6FA;
     --blue1: #2F80ED;
+    --blue2: #23508a;
     --red: #EB5757;
     --green1: #219653;
     --green2: #27AE60;
@@ -22,7 +24,7 @@ body {
     align-items: center;
     margin: 0;
     padding: 0;
-    background-color: white;
+    background-color: var(--gray5);
     color: black;
 }
 #app {
@@ -70,10 +72,22 @@ button.primary {
     cursor: pointer;
     outline: none;
 }
-button:hover {
+button:hover, a:hover {
     opacity: .7;
 }
 button:disabled {
     pointer-events: none;
     opacity: .7;
+}
+a {
+    text-decoration: none;
+    color: black;
+}
+.option {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+}
+.option.opened {
+    max-height: 1000px;
 }
