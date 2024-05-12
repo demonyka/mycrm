@@ -6,11 +6,11 @@
             <form @submit.prevent="formSubmit" class="validation">
                 <div class="form-input">
                     <input
-                        v-model="form.login"
+                        v-model="form.username"
                         required
-                        placeholder="Логин"
-                        :class="{'error': form.errors.login}"
-                        @focus="form.errors.login = null"
+                        placeholder="Имя пользователя"
+                        :class="{'error': form.errors.username}"
+                        @focus="form.errors.username = null"
                     >
                 </div>
                 <div class="form-input">
@@ -25,7 +25,7 @@
                 </div>
                 <button class="primary" type="submit">Войти</button>
                 <transition name="fade">
-                    <p v-if="form.errors.password ?? form.errors.login" class="error">{{ form.errors.password || form.errors.login }}</p>
+                    <p v-if="form.errors.password ?? form.errors.username" class="error">{{ form.errors.password || form.errors.username }}</p>
                 </transition>
             </form>
         </Block>
@@ -49,7 +49,7 @@ export default {
         return {
             form: useForm({
                 _token: this.$page.props.csrf_token,
-                login: '',
+                username: '',
                 password: ''
             })
         }

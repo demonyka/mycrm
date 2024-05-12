@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('login')->unique();
+            $table->string('username')->unique();
             $app_url = parse_url(env('APP_URL'), PHP_URL_HOST);
             $table->string('email')->unique()->default(DB::raw("CONCAT(login, '@', '" . $app_url . "')"));
             $table->json('data')->nullable();
