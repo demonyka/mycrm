@@ -7,7 +7,7 @@ use App\Models\Staff\User;
 
 class StaffController extends Controller
 {
-    public function viewList()
+    public function list()
     {
         $users = User::paginate(10);
         return inertia('Staff/List', ['users' => $users]);

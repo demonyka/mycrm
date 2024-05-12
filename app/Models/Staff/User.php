@@ -34,7 +34,7 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    protected $appends = ['fullname', 'permissions'];
+    protected $appends = ['fullname', 'permissions', 'positions'];
 
     public function roles()
     {
@@ -96,5 +96,15 @@ class User extends Authenticatable
             }
         }
         return array_unique($permissions);
+    }
+
+    public function positions()
+    {
+        return $this->belongsToMany(Position::class, 'user_positions', 'user_id', 'position_id');
+    }
+
+    public function getPositionsAttribute()
+    {
+        return $this->positions()->pluck('name');
     }
 }

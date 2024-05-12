@@ -21,7 +21,7 @@ use Inertia\Inertia;
 Route::middleware('auth')->group(function () {
     Route::get('/', [IndexController::class, 'view'])->name('index.view');
     Route::prefix('staff')->middleware('can:staff')->group(function () {
-       Route::get('/', [StaffController::class, 'viewList'])->name('staff.view.list');
+       Route::get('/list', [StaffController::class, 'list'])->middleware('can:staff.view.list')->name('staff.view.list');
     });
 });
 
