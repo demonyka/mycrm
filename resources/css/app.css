@@ -1,0 +1,79 @@
+:root {
+    --gray1: #2d2d2d;
+    --gray2: #3f3f3f;
+    --gray3: #828282;
+    --gray4: #BDBDBD;
+    --blue1: #2F80ED;
+    --red: #EB5757;
+    --green1: #219653;
+    --green2: #27AE60;
+    --green3: #6FCF97;
+}
+* {
+    transition: all .3s ease;
+    font-family: "Montserrat", sans-serif;
+    box-sizing: border-box;
+}
+
+body {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+    color: black;
+}
+#app {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    min-height: 100vh;
+    top: 0;
+    width: 100%;
+    max-width: 100vw;
+}
+.fade-enter-active, .fade-leave-active {
+    transition: opacity 0.3s ease;
+}
+.fade-enter-from, .fade-leave-to {
+    opacity: 0;
+}
+h1, h2, h3, h4, h5, h6, p {
+    margin: 0;
+}
+h2.title {
+    font-weight: 500;
+}
+p.error {
+    font-size: 12px;
+    color: var(--red);
+    word-wrap: break-word;
+    max-width: inherit;
+}
+input.error {
+    color: var(--red) !important;
+    border-color: var(--red) !important;
+}
+input.error::placeholder {
+    color: var(--red);
+}
+button.primary {
+    background-color: var(--blue1);
+    border: none;
+    border-radius: 15px;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    outline: none;
+}
+button:hover {
+    opacity: .7;
+}
+button:disabled {
+    pointer-events: none;
+    opacity: .7;
+}
