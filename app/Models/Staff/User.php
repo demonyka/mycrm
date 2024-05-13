@@ -50,6 +50,17 @@ class User extends Authenticatable
         );
     }
 
+    public function minimum()
+    {
+        return [
+            'id' => $this->id,
+            'username' => $this->username,
+            'firstname' => $this->getFirstnameAttribute(),
+            'fullname' => $this->getFullnameAttribute(),
+            'avatar_path' => json_decode($this->tpl_data, true)['avatar_path'],
+        ];
+    }
+
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'user_roles', 'user_id', 'role_id');
@@ -89,6 +100,21 @@ class User extends Authenticatable
     {
         $value = $this->getTplValue('lastname') . " " . $this->getTplValue('firstname') . " " .
             $this->getTplValue('middlename');
+
+        if(!trim($value)) {
+            $value = $this->username;
+        }
+
+        return trim($value);
+    }
+
+    public function getFirstnameAttribute(): string
+    {
+        $value = $this->getTplValue('firstname');
+
+        if(!trim($value)) {
+            $value = $this->username;
+        }
 
         return trim($value);
     }

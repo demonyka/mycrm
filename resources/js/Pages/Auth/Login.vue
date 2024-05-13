@@ -3,8 +3,14 @@
     <Center>
         <Block>
             <LogoTitle title="Login"/>
+            <div class="user-info">
+                <h4 v-if="$page.props.user" class="title">С возращением, {{ $page.props.user.firstname }}</h4>
+                <img class="user-avatar" v-if="user" :alt="user.username"
+                     :src="user.avatar_path ? user.avatar_path : '/assets/images/default_avatar.png'"
+                     @error="$event.target.src = '/assets/images/default_avatar.png'">
+            </div>
             <form @submit.prevent="formSubmit" class="validation">
-                <div class="form-input">
+                <div v-if="!$page.props.user" class="form-input">
                     <input
                         v-model="form.username"
                         required
@@ -34,13 +40,14 @@
                 <transition name="fade">
                     <p v-if="form.errors.password ?? form.errors.username" class="error">{{ form.errors.password || form.errors.username }}</p>
                 </transition>
+                <a v-if="$page.props.user" @click="deleteCookie('user_id')">Войти в другой аккаунт</a>
             </form>
         </Block>
     </Center>
 </template>
 
 <script>
-import {Head, useForm} from "@inertiajs/vue3";
+import {Head, useForm, Link} from "@inertiajs/vue3";
 import Center from "@/Layouts/Center.vue";
 import Block from "@/Layouts/Block.vue";
 import LogoTitle from "@/Elements/LogoTitle.vue";
@@ -48,6 +55,7 @@ export default {
     name: "Login",
     components: {
         LogoTitle,
+        Link,
         Block,
         Center,
         Head
@@ -56,22 +64,39 @@ export default {
         return {
             form: useForm({
                 _token: this.$page.props.csrf_token,
-                username: '',
+                username: this.$page.props.user && this.$page.props.user.username || '',
                 password: ''
             }),
-            isPasswordShow: false
+            isPasswordShow: false,
         }
     },
+    props: [
+        'user'
+    ],
     methods: {
         formSubmit() {
             this.form.post(route('auth.login.store'), {
                 onError: () => this.form.reset('password'),
             });
         },
+        deleteCookie(name) {
+            document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+            location.reload();
+        }
     }
 }
 </script>
 
 <style scoped>
-
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        img.user-avatar {
+            width: 24px;
+            height: 24px;
+            object-fit: cover;
+            border-radius: 100%;
+        }
+    }
 </style>

@@ -4,15 +4,21 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\Staff\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 
 class LoginController extends Controller
 {
-    public function view()
+    public function view(Request $request)
     {
-        return inertia('Auth/Login');
+        $user = User::find(Cookie::get('user_id'));
+        if ($user) {
+            $user = $user->minimum();
+        }
+        return inertia('Auth/Login', ['user' => $user]);
     }
 
     public function store(LoginRequest $request): RedirectResponse
@@ -32,6 +38,8 @@ class LoginController extends Controller
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
+
+        Cookie::queue(Cookie::forget('user_id'));
 
         return redirect()->route('auth.login.view');
     }

@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Cookie;
+use App\Models\Staff\User;
 
 /**
  * @property string username
@@ -47,7 +49,7 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (!Auth::attempt($this->only('username', 'password'), true)) {
+        if (!Auth::attempt($this->only('username', 'password'), false)) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
@@ -56,6 +58,11 @@ class LoginRequest extends FormRequest
         }
 
         RateLimiter::clear($this->throttleKey());
+
+        /* @var User $user*/
+        $user = auth()->user();
+
+        Cookie::queue('user_id', $user->id, 1440, '/', null, false, false);
     }
 
     /**

@@ -48,7 +48,7 @@ body {
 h1, h2, h3, h4, h5, h6, p {
     margin: 0;
 }
-h2.title, h3.title {
+h2.title, h3.title, h4.title {
     font-weight: 500;
 }
 p.error {
@@ -83,6 +83,7 @@ button:disabled {
 a {
     text-decoration: none;
     color: black;
+    cursor: pointer;
 }
 .option {
     max-height: 0;
