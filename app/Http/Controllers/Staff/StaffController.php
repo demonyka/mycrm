@@ -30,12 +30,12 @@ class StaffController extends Controller
             ],
         ];
     }
-    public function list()
+    public function listView()
     {
         $users = User::paginate(20);
         return inertia('Staff/List', ['users' => $users, 'links' => $this->links]);
     }
-    public function listDismiss()
+    public function listDismissView()
     {
         $users = User::withoutGlobalScope('work')->where('status', 'dismiss')->paginate(20);
         return inertia('Staff/DismissList', ['users' => $users, 'links' => $this->links]);
@@ -66,5 +66,11 @@ class StaffController extends Controller
             'password' => Hash::make($request->password),
         ]);
         return redirect()->route('staff.view.list');
+    }
+
+    public function userView($id)
+    {
+        $user = User::withoutGlobalScope('work')->findOrFail($id);
+        return $user;
     }
 }

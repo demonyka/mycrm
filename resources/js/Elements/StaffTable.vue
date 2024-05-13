@@ -106,7 +106,7 @@ export default {
             <td><span>{{ user.id }}</span></td>
             <td><span>{{ user.username }}</span></td>
             <td><span>{{ user.email }}</span></td>
-            <td v-for="(param, key) in settings" :style="{ 'display': param.status ? 'table-cell' : 'none'}"><span v-if="user[key]">{{ Array.isArray(user[key]) ? user[key].join(', ') : user[key] }}</span></td>
+            <td v-for="(param, key) in settings" :style="{ 'display': param.status ? 'table-cell' : 'none'}"><span v-if="user[key] && user[key] !== user.username">{{ Array.isArray(user[key]) ? user[key].join(', ') : user[key] }}</span></td>
             <td @click.stop class="actions">
                 <svg @click="openActions(user.id)" width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M18 12H18.01M12 12H12.01M6 12H6.01M13 12C13 12.5523 12.5523 13 12 13C11.4477 13 11 12.5523 11 12C11 11.4477 11.4477 11 12 11C12.5523 11 13 11.4477 13 12ZM19 12C19 12.5523 18.5523 13 18 13C17.4477 13 17 12.5523 17 12C17 11.4477 17.4477 11 18 11C18.5523 11 19 11.4477 19 12ZM7 12C7 12.5523 6.55228 13 6 13C5.44772 13 5 12.5523 5 12C5 11.4477 5.44772 11 6 11C6.55228 11 7 11.4477 7 12Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>

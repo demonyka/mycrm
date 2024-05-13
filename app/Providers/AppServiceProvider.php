@@ -28,7 +28,6 @@ class AppServiceProvider extends ServiceProvider
             $permissions = Permission::all();
             foreach ($permissions as $permission) {
                 Gate::define($permission->permission, function (User $user) use ($permission) {
-                    \Log::debug($permission);
                     return $user->hasPermission($permission->permission) ? Response::allow() : Response::deny('Необходимо право "' . $permission->name . '"');
                 });
             }

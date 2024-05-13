@@ -73,6 +73,9 @@ class User extends Authenticatable
 
     public function hasPermission(string $permission): bool
     {
+        if ($this->isSuperuser()) {
+            return true;
+        }
         foreach ($this->roles as $role) {
             if ($role->permissions()->where('permission', $permission)->first() !== null) {
                 return true;
@@ -100,6 +103,10 @@ class User extends Authenticatable
     {
         $value = $this->getTplValue('lastname') . " " . $this->getTplValue('firstname') . " " .
             $this->getTplValue('middlename');
+
+        if (!trim($value)) {
+            $value = $this->username;
+        }
 
         return trim($value);
     }

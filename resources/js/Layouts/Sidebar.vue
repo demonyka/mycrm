@@ -29,7 +29,7 @@ export default {
         <div style="width: 100%">
             <Link class="logo">
                 <img :alt="$page.props.auth.user.username"
-                     :src="$page.props.auth.user && JSON.parse($page.props.auth.user.tpl_data).avatar_path ? JSON.parse($page.props.auth.user.tpl_data).avatar_path : '/assets/images/default_avatar.png'"
+                     :src="$page.props.auth.user.tpl_data && JSON.parse($page.props.auth.user.tpl_data).avatar_path ? JSON.parse($page.props.auth.user.tpl_data).avatar_path : '/assets/images/default_avatar.png'"
                      @error="$event.target.src = '/assets/images/default_avatar.png'"
                      loading="eager">
             </Link>
