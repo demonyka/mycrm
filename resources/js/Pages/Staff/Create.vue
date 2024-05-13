@@ -43,21 +43,7 @@
 </template>
 
 <style scoped>
-    svg.password-show {
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        cursor: pointer;
-        path {
-            stroke: var(--gray4);
-        }
-    }
-    svg.password-show.active {
-        path {
-            stroke: var(--gray3);
-        }
-    }
+
 </style>
 
 <script>
