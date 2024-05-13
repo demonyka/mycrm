@@ -17,6 +17,10 @@ return new class extends Migration
                 'permission' => 'staff',
             ],
             [
+                'name' => 'Просмотр сотрудников',
+                'permission' => 'staff.view',
+            ],
+            [
                 'name' => 'Просмотр списка сотрудников',
                 'permission' => 'staff.view.list',
             ],
@@ -51,6 +55,8 @@ return new class extends Migration
     public function down(): void
     {
         \DB::table('permissions')->whereIn('permission', [
+            'staff',
+            'staff.view',
             'staff.view.list',
             'staff.view.dismiss',
             'staff.create',

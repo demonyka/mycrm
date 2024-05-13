@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('username')->unique();
             $app_url = parse_url(env('APP_URL'), PHP_URL_HOST);
-            $table->string('email')->unique()->default(DB::raw("CONCAT(login, '@', '" . $app_url . "')"));
+            $table->string('email')->unique()->default(DB::raw("CONCAT(username, '@', '" . $app_url . "')"));
             $table->json('tpl_data')->nullable();
             $table->string('password');
             $table->rememberToken();
