@@ -92,3 +92,29 @@ a {
 .option.opened {
     max-height: 1000px;
 }
+.pagination-container {
+    display: flex;
+    column-gap: 10px;
+    margin: 0;
+}
+.paginate-buttons {
+    height: 35px;
+    width: 35px;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: white;
+    border: 1px solid var(--gray4);
+    color: black;
+    outline: none;
+}
+.paginate-buttons:hover {
+    opacity: .7;
+}
+.active-page {
+    background-color: var(--blue1);
+    border: 1px solid var(--blue1);
+    color: white;
+}
+.active-page:hover {
+    background-color: var(--blue1);
+}

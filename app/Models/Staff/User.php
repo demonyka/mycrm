@@ -5,10 +5,11 @@ namespace App\Models\Staff;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Database\Eloquent\Builder;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
+ * @property string status
  * @property string username
  * @property string email
  * @property mixed tpl_data
@@ -19,6 +20,7 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
+        'status',
         'username',
         'email',
         'tpl_data',
@@ -35,6 +37,18 @@ class User extends Authenticatable
     ];
 
     protected $appends = ['fullname', 'permissions', 'positions'];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(
+            'work',
+            function (Builder $builder) {
+                $builder->where('status', '!=', 'dismiss');
+            }
+        );
+    }
 
     public function roles()
     {

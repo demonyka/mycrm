@@ -1,7 +1,7 @@
 <template>
     <Head title="Сотрудники"/>
     <Sidebar :links="links">
-        <table v-if="users.data.length !== 0">
+        <table>
             <thead>
                 <tr>
                     <th style="display: flex; align-items: center; justify-content: center">
@@ -23,24 +23,13 @@
                              :src="'/storage/avatars/' + user.id + '.png'"
                              @error="$event.target.src = '/assets/images/default_avatar.png'">
                     </td>
-                    <td><span>{{ user.id }}</span></td>
-                    <td><span>{{ user.username }}</span></td>
-                    <td><span>{{ user.email }}</span></td>
+                    <td><span v-if="user.id">{{ user.id }}</span></td>
+                    <td><span v-if="user.username">{{ user.username }}</span></td>
+                    <td><span v-if="user.email">{{ user.email }}</span></td>
                     <td v-for="(param, key) in settings" :style="{ 'display': param.status ? 'table-cell' : 'none'}"><span v-if="user[key]">{{ Array.isArray(user[key]) ? user[key].join(', ') : user[key] }}</span></td>
                 </tr>
             </tbody>
         </table>
-        <div v-if="users && users.total > users.per_page" style="text-align: center">
-            <vue-awesome-paginate
-                :current-page="users.current_page"
-                :total-items="users.total"
-                :max-pages-shown="5"
-                :items-per-page="users.per_page"
-                v-model="currentPage"
-                :on-click="onClickHandler"
-                :show-breakpoint-buttons="true"
-            />
-        </div>
     </Sidebar>
 </template>
 
@@ -96,11 +85,9 @@
 <script>
 import {Head} from "@inertiajs/vue3";
 import Sidebar from "@/Layouts/Sidebar.vue";
-import {VueAwesomePaginate} from "vue-awesome-paginate";
 export default {
     name: "Index",
     components: {
-        VueAwesomePaginate,
         Sidebar,
         Head
     },
@@ -116,17 +103,24 @@ export default {
                     status: false
                 }
             },
-            currentPage: this.users.current_page
+            links: [
+                {
+                    name: 'Все сотрудники',
+                    href: route('staff.view.list'),
+                    is_active: true,
+                    permission: 'staff.view.list'
+                },
+                {
+                    name: 'Уволенные сотрудники',
+                    href: '',
+                    is_active: false,
+                    permission: null
+                },
+            ]
         }
     },
     props: [
-        'users',
-        'links'
-    ],
-    methods: {
-        onClickHandler(page) {
-            this.$inertia.visit(this.users.path + '?page=' + page);
-        }
-    }
+        'users'
+    ]
 }
 </script>

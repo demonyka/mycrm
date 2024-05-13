@@ -1,11 +1,8 @@
 <?php
 
 use App\Http\Controllers\IndexController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Staff\StaffController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +19,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/', [IndexController::class, 'view'])->name('index.view');
     Route::prefix('staff')->middleware('can:staff')->group(function () {
        Route::get('/list', [StaffController::class, 'list'])->middleware('can:staff.view.list')->name('staff.view.list');
+        Route::get('/list/dismiss', [StaffController::class, 'listDismiss'])->middleware('can:staff.view.dismiss')->name('staff.view.dismiss');
     });
 });
 
