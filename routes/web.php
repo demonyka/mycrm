@@ -18,8 +18,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth')->group(function () {
     Route::get('/', [IndexController::class, 'view'])->name('index.view');
     Route::prefix('staff')->middleware('can:staff')->group(function () {
-       Route::get('/list', [StaffController::class, 'list'])->middleware('can:staff.view.list')->name('staff.view.list');
+        Route::get('/list', [StaffController::class, 'list'])->middleware('can:staff.view.list')->name('staff.view.list');
         Route::get('/list/dismiss', [StaffController::class, 'listDismiss'])->middleware('can:staff.view.dismiss')->name('staff.view.dismiss');
+        Route::post('/delete/{id}', [StaffController::class, 'delete'])->middleware('can:staff.delete')->name('staff.delete');
+        Route::post('/restore/{id}', [StaffController::class, 'restore'])->middleware('can:staff.restore')->name('staff.restore');
     });
 });
 

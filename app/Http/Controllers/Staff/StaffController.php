@@ -37,4 +37,18 @@ class StaffController extends Controller
         $users = User::withoutGlobalScope('work')->where('status', 'dismiss')->paginate(20);
         return inertia('Staff/List', ['users' => $users, 'links' => $this->links]);
     }
+    public function delete($id)
+    {
+        $user = User::findOrFail($id);
+        $user->status = 'dismiss';
+        $user->save();
+        return redirect()->back();
+    }
+    public function restore($id)
+    {
+        $user = User::withoutGlobalScope('work')->findOrFail($id);
+        $user->status = 'active';
+        $user->save();
+        return redirect()->back();
+    }
 }

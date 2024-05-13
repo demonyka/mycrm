@@ -16,6 +16,11 @@
         @inertiaHead
     </head>
     <body class="font-sans antialiased">
+        @if(session()->has('message'))
+            <div style="position: absolute; z-index: 10000; display: flex; background-color: var(--green1); border-radius: 10px; color: white; padding: 20px">
+                {{ session()->get('message') }}
+            </div>
+        @endif
         @inertia
     </body>
 </html>

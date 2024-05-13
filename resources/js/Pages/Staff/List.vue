@@ -1,7 +1,7 @@
 <template>
     <Head title="Сотрудники"/>
     <Sidebar :links="links">
-        <table v-if="users.data.length !== 0">
+        <table v-if="users.data.length !== 0" @click="actionsOpened = {}">
             <thead>
                 <tr>
                     <th style="display: flex; align-items: center; justify-content: center">
@@ -14,19 +14,35 @@
                     <th>Логин</th>
                     <th>E-Mail</th>
                     <th v-for="param in settings" :style="{ 'display': param.status ? 'table-cell' : 'none'}">{{ param.name }}</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for="user in users.data">
                     <td class="avatar_cell">
                         <img :alt="user.username"
-                             :src="'/storage/avatars/' + user.id + '.png'"
+                             :src="JSON.parse(user.tpl_data).avatar_path ?? '/assets/images/default_avatar.png'"
                              @error="$event.target.src = '/assets/images/default_avatar.png'">
                     </td>
                     <td><span>{{ user.id }}</span></td>
                     <td><span>{{ user.username }}</span></td>
                     <td><span>{{ user.email }}</span></td>
                     <td v-for="(param, key) in settings" :style="{ 'display': param.status ? 'table-cell' : 'none'}"><span v-if="user[key]">{{ Array.isArray(user[key]) ? user[key].join(', ') : user[key] }}</span></td>
+                    <td @click.stop class="actions">
+                        <svg @click="actionsOpened = {}; actionsOpened[user.id] = !actionsOpened[user.id]" width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18 12H18.01M12 12H12.01M6 12H6.01M13 12C13 12.5523 12.5523 13 12 13C11.4477 13 11 12.5523 11 12C11 11.4477 11.4477 11 12 11C12.5523 11 13 11.4477 13 12ZM19 12C19 12.5523 18.5523 13 18 13C17.4477 13 17 12.5523 17 12C17 11.4477 17.4477 11 18 11C18.5523 11 19 11.4477 19 12ZM7 12C7 12.5523 6.55228 13 6 13C5.44772 13 5 12.5523 5 12C5 11.4477 5.44772 11 6 11C6.55228 11 7 11.4477 7 12Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <transition name="fade">
+                            <div v-if="actionsOpened[user.id]" class="actions-buttons">
+                                <svg @click="deleteUser(user.id)" v-if="user.status === 'active'" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M18 6L17.1991 18.0129C17.129 19.065 17.0939 19.5911 16.8667 19.99C16.6666 20.3412 16.3648 20.6235 16.0011 20.7998C15.588 21 15.0607 21 14.0062 21H9.99377C8.93927 21 8.41202 21 7.99889 20.7998C7.63517 20.6235 7.33339 20.3412 7.13332 19.99C6.90607 19.5911 6.871 19.065 6.80086 18.0129L6 6M4 6H20M16 6L15.7294 5.18807C15.4671 4.40125 15.3359 4.00784 15.0927 3.71698C14.8779 3.46013 14.6021 3.26132 14.2905 3.13878C13.9376 3 13.523 3 12.6936 3H11.3064C10.477 3 10.0624 3 9.70951 3.13878C9.39792 3.26132 9.12208 3.46013 8.90729 3.71698C8.66405 4.00784 8.53292 4.40125 8.27064 5.18807L8 6M14 10V17M10 10V17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <svg @click="resotreUser(user.id)" v-else width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M3 8H16.5C18.9853 8 21 10.0147 21 12.5C21 14.9853 18.9853 17 16.5 17H3M3 8L6 5M3 8L6 11" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                        </transition>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -48,10 +64,45 @@
     .avatar_cell {
         width: 56px;
         padding: 12px;
+        img {
+            width: 56px;
+            height: 56px;
+            cursor: pointer;
+            object-fit: cover;
+        }
     }
-    .avatar_cell img {
-        width: 56px;
-        height: 56px;
+    .actions {
+        position: relative;
+        padding: 28px 28px;
+        width: 0;
+        svg {
+            cursor: pointer;
+            path {
+                stroke: var(--gray3);
+            }
+        }
+        .actions-buttons {
+            background: white;
+            position: absolute;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            left: 0;
+            top: 50%;
+            transform: translate(50%, -50%);
+            cursor: default;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            svg {
+                cursor: pointer;
+            }
+            svg:hover {
+                path {
+                    stroke: var(--blue1);
+                }
+            }
+        }
     }
     table {
         width: 100%;
@@ -63,6 +114,8 @@
         border-radius: 5px;
         position: relative;
         margin-bottom: 24px;
+        text-indent: initial;
+        border-spacing: 2px;
     }
     thead {
         border-top-left-radius: 5px;
@@ -116,7 +169,8 @@ export default {
                     status: false
                 }
             },
-            currentPage: this.users.current_page
+            currentPage: this.users.current_page,
+            actionsOpened: {}
         }
     },
     props: [
@@ -126,6 +180,12 @@ export default {
     methods: {
         onClickHandler(page) {
             this.$inertia.visit(this.users.path + '?page=' + page);
+        },
+        deleteUser(id) {
+            this.$inertia.post(route('staff.delete', {id: id}));
+        },
+        resotreUser(id) {
+            this.$inertia.post(route('staff.restore', {id: id}));
         }
     }
 }

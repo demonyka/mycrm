@@ -33,6 +33,10 @@ return new class extends Migration
                 'permission' => 'staff.delete',
             ],
             [
+                'name' => 'Восстановление сотрудников',
+                'permission' => 'staff.restore',
+            ],
+            [
                 'name' => 'Редактирование сотрудников',
                 'permission' => 'staff.edit',
             ],

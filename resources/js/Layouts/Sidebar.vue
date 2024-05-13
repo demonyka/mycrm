@@ -29,7 +29,7 @@ export default {
         <div style="width: 100%">
             <Link class="logo">
                 <img :alt="$page.props.auth.user.username"
-                     :src="'/storage/avatars/' + $page.props.auth.user.id + '.png'"
+                     :src="JSON.parse($page.props.auth.user.tpl_data).avatar_path ?? '/assets/images/default_avatar.png'"
                      @error="$event.target.src = '/assets/images/default_avatar.png'"
                      loading="eager">
             </Link>
@@ -96,7 +96,7 @@ export default {
             </svg>
         </div>
         <div class="topbar-content">
-            <a v-for="link in links" :key="link.href" :href="link.href" :class="{ 'active': link.is_active }" :style="{ 'display': link.permission ? !$page.props.auth.user.permissions.includes(link.permission) ? 'none' : 'flex' : 'flex' }">{{ link.name }}</a>
+            <Link v-for="link in links" :key="link.href" :href="link.href" :class="{ 'active': link.is_active }" :style="{ 'display': link.permission ? !$page.props.auth.user.permissions.includes(link.permission) ? 'none' : 'flex' : 'flex' }">{{ link.name }}</Link>
         </div>
     </div>
     <div @click="sidebarClosed = true" class="content mobile">
