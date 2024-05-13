@@ -36,7 +36,7 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    protected $appends = ['fullname', 'permissions', 'positions'];
+    protected $appends = ['fullname', 'positions'];
 
     protected static function boot()
     {

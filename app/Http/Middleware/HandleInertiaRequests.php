@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Staff\User;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -29,11 +30,13 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        /* @var User $user */
+        $user = $request->user();
         return [
             ...parent::share($request),
             'csrf_token' => csrf_token(),
             'auth' => [
-                'user' => $request->user(),
+                'user' => $user->append('permissions'),
             ],
             'app' => [
                 'name' => config('app.name'),

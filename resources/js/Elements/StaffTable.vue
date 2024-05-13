@@ -1,5 +1,5 @@
 <script>
-import {Head} from "@inertiajs/vue3";
+import {Head, Link} from "@inertiajs/vue3";
 import Sidebar from "@/Layouts/Sidebar.vue";
 import {VueAwesomePaginate} from "vue-awesome-paginate";
 export default {
@@ -7,7 +7,7 @@ export default {
     components: {
         VueAwesomePaginate,
         Sidebar,
-        Head
+        Head, Link
     },
     props: [
         'users'
@@ -99,9 +99,13 @@ export default {
         <tbody>
         <tr v-for="user in users.data">
             <td class="avatar_cell">
-                <img :alt="user.username"
-                     :src="user.tpl_data && JSON.parse(user.tpl_data).avatar_path ? JSON.parse(user.tpl_data).avatar_path : '/assets/images/default_avatar.png'"
-                     @error="$event.target.src = '/assets/images/default_avatar.png'">
+                <Link
+                    :style="{ pointerEvents: !$page.props.auth.user.permissions.includes('staff.view') ? 'none' : 'auto' }"
+                    :href="route('staff.view', {id: user.id})">
+                    <img :alt="user.username"
+                         :src="user.tpl_data && JSON.parse(user.tpl_data).avatar_path ? JSON.parse(user.tpl_data).avatar_path : '/assets/images/default_avatar.png'"
+                         @error="$event.target.src = '/assets/images/default_avatar.png'">
+                </Link>
             </td>
             <td><span>{{ user.id }}</span></td>
             <td><span>{{ user.username }}</span></td>
@@ -148,7 +152,6 @@ export default {
     img {
         width: 56px;
         height: 56px;
-        cursor: pointer;
         object-fit: cover;
     }
 }

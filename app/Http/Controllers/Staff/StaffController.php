@@ -70,6 +70,7 @@ class StaffController extends Controller
 
     public function userView($id)
     {
+        /* @var User $user */
         $user = User::withoutGlobalScope('work')->findOrFail($id);
         return $user;
     }
