@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Staff;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Staff\CreateStaffUserRequest;
 use App\Models\Staff\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\RedirectResponse;
 
 class StaffController extends Controller
 {
-    private $links;
+    private array $links;
 
     public function __construct()
     {
@@ -35,20 +38,33 @@ class StaffController extends Controller
     public function listDismiss()
     {
         $users = User::withoutGlobalScope('work')->where('status', 'dismiss')->paginate(20);
-        return inertia('Staff/List', ['users' => $users, 'links' => $this->links]);
+        return inertia('Staff/DismissList', ['users' => $users, 'links' => $this->links]);
     }
-    public function delete($id)
+    public function createView()
+    {
+        return inertia('Staff/Create', ['links' => $this->links]);
+    }
+    public function delete($id): RedirectResponse
     {
         $user = User::findOrFail($id);
         $user->status = 'dismiss';
         $user->save();
         return redirect()->back();
     }
-    public function restore($id)
+    public function restore($id): RedirectResponse
     {
         $user = User::withoutGlobalScope('work')->findOrFail($id);
         $user->status = 'active';
         $user->save();
         return redirect()->back();
+    }
+
+    public function create(CreateStaffUserRequest $request)
+    {
+        $user = User::create([
+            'username' => $request->username,
+            'password' => Hash::make($request->password),
+        ]);
+        return redirect()->route('staff.view.list');
     }
 }

@@ -90,11 +90,7 @@ class User extends Authenticatable
         $value = $this->getTplValue('lastname') . " " . $this->getTplValue('firstname') . " " .
             $this->getTplValue('middlename');
 
-        if (!trim($value)) {
-            $value = $this->username;
-        }
-
-        return $value;
+        return trim($value);
     }
 
     public function getPermissionsAttribute()

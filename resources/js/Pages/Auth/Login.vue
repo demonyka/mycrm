@@ -65,31 +65,5 @@ export default {
 </script>
 
 <style scoped>
-    form.validation {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-        position: relative;
-        width: 300px;
-        div.form-input {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 5px;
-            position: relative;
-            width: 100%;
-            input {
-                border: 1px solid var(--gray4);
-                border-radius: 15px;
-                padding: 10px 20px;
-                outline: none;
-                position: relative;
-                width: 100%;
-            }
-            input:focus {
-                border-color: var(--blue1);
-            }
-        }
-    }
+
 </style>

@@ -1,9 +1,6 @@
 <template>
-    <Head title="Сотрудники"/>
+    <Head title="Уволенные сотрудники"/>
     <Sidebar :links="links">
-        <div v-if="$page.props.auth.user.permissions.includes('staff.create')" style="margin-bottom: 20px">
-            <button v-if="$page.props.auth.user.permissions.includes('staff.create')" class="primary" @click="$inertia.visit(route('staff.view.create'))">Добавить сотрудника</button>
-        </div>
         <StaffTable :users="users"/>
     </Sidebar>
 </template>

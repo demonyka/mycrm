@@ -48,7 +48,7 @@ body {
 h1, h2, h3, h4, h5, h6, p {
     margin: 0;
 }
-h2.title {
+h2.title, h3.title {
     font-weight: 500;
 }
 p.error {
@@ -117,4 +117,31 @@ a {
 }
 .active-page:hover {
     background-color: var(--blue1);
+}
+form.validation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    width: 300px;
+    div.form-input {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+        position: relative;
+        width: 100%;
+        input {
+            border: 1px solid var(--gray4);
+            border-radius: 15px;
+            padding: 10px 20px;
+            outline: none;
+            position: relative;
+            width: 100%;
+        }
+        input:focus {
+            border-color: var(--blue1);
+        }
+    }
 }
