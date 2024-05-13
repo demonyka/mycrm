@@ -57,7 +57,7 @@ class User extends Authenticatable
             'username' => $this->username,
             'firstname' => $this->getFirstnameAttribute(),
             'fullname' => $this->getFullnameAttribute(),
-            'avatar_path' => json_decode($this->tpl_data, true)['avatar_path'],
+            'avatar_path' => json_decode($this->tpl_data, true)['avatar_path'] ?? null,
         ];
     }
 
@@ -100,10 +100,6 @@ class User extends Authenticatable
     {
         $value = $this->getTplValue('lastname') . " " . $this->getTplValue('firstname') . " " .
             $this->getTplValue('middlename');
-
-        if(!trim($value)) {
-            $value = $this->username;
-        }
 
         return trim($value);
     }
