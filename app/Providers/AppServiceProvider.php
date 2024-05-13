@@ -24,13 +24,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if (Schema::hasTable('permissions')) {
-            $permissions = Permission::all();
-            foreach ($permissions as $permission) {
-                Gate::define($permission->permission, function (User $user) use ($permission) {
-                    return $user->hasPermission($permission->permission) ? Response::allow() : Response::deny('Необходимо право "' . $permission->name . '"');
-                });
-            }
-        }
+        //
     }
 }

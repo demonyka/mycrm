@@ -33,11 +33,17 @@ class StaffController extends Controller
     public function listView()
     {
         $users = User::paginate(20);
+        $users->each(function ($user) {
+            $user->append('positions');
+        });
         return inertia('Staff/List', ['users' => $users, 'links' => $this->links]);
     }
     public function listDismissView()
     {
         $users = User::withoutGlobalScope('work')->where('status', 'dismiss')->paginate(20);
+        $users->each(function ($user) {
+            $user->append('positions');
+        });
         return inertia('Staff/DismissList', ['users' => $users, 'links' => $this->links]);
     }
     public function createView()
@@ -71,7 +77,7 @@ class StaffController extends Controller
     public function userView($id)
     {
         /* @var User $user */
-        $user = User::withoutGlobalScope('work')->findOrFail($id);
-        return $user;
+        $user = User::withoutGlobalScope('work')->findOrFail($id)->append(['roles', 'positions']);
+        return inertia('Staff/User', ['user' => $user, 'links' => $this->links]);
     }
 }

@@ -9,11 +9,14 @@ use Illuminate\Database\Eloquent\Builder;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
- * @property string status
- * @property string username
- * @property string email
- * @property mixed tpl_data
- * @property string password
+ * @property int $id
+ * @property string $status
+ * @property string $username
+ * @property string $email
+ * @property mixed $tpl_data
+ * @property string $password
+ * @property mixed $permissions
+ * @property mixed $roles
  */
 class User extends Authenticatable
 {
@@ -36,7 +39,7 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    protected $appends = ['fullname', 'positions'];
+    protected $appends = ['fullname'];
 
     protected static function boot()
     {
@@ -66,6 +69,13 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class, 'user_roles', 'user_id', 'role_id');
     }
 
+    public function getRolesAttribute()
+    {
+        $roles = $this->roles()->get()->map(function ($role) {
+            return ['id' => $role->id, 'name' => $role->name];
+        });
+        return $roles;
+    }
     public function isSuperuser()
     {
         return in_array($this->username, explode(',', config('crm.superusers')));
@@ -76,7 +86,8 @@ class User extends Authenticatable
         if ($this->isSuperuser()) {
             return true;
         }
-        foreach ($this->roles as $role) {
+        $roles = $this->roles()->get();
+        foreach ($roles as $role) {
             if ($role->permissions()->where('permission', $permission)->first() !== null) {
                 return true;
             }
@@ -127,11 +138,11 @@ class User extends Authenticatable
         if ($this->isSuperuser()) {
             return Permission::all()->pluck('permission');
         }
-        $roles = $this->roles;
+        $roles = $this->roles()->get();
         $permissions = [];
         foreach ($roles as $role) {
             foreach ($role->permissions()->pluck('permission') as $permission) {
-                array_push($permissions, $permission);
+                $permissions[] = $permission;
             }
         }
         return array_unique($permissions);
@@ -144,6 +155,9 @@ class User extends Authenticatable
 
     public function getPositionsAttribute()
     {
-        return $this->positions()->pluck('name');
+        $positions = $this->positions()->get()->map(function ($position) {
+            return ['id' => $position->id, 'name' => $position->name];
+        });
+        return $positions;
     }
 }
