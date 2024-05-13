@@ -55,6 +55,7 @@ return new class extends Migration
             'staff.view.dismiss',
             'staff.create',
             'staff.delete',
+            'staff.restore',
             'staff.edit',
         ])->delete();    }
 };
