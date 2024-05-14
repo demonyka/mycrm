@@ -177,8 +177,10 @@
         .block {
             width: 100% !important;
         }
-        p.info {
-            font-size: 12px;
+        .info-line {
+            * {
+                font-size: 10px !important;
+            }
         }
     }
     .block {
