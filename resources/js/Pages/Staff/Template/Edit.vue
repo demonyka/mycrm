@@ -3,6 +3,13 @@
     <Sidebar :links="links">
         <Center>
             <Block class="block">
+                <div class="actions">
+                    <Link :href="route('staff.template.view')">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 12H18M6 12L11 7M6 12L11 17" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </Link>
+                </div>
                 <h2 class="title">{{ template.name }}</h2>
                 <form style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 10px">
                     <div v-for="(field, index) in JSON.parse(template.fields)" class="userdata">
@@ -185,6 +192,24 @@
             color: white;
         }
     }
+}
+.actions {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    z-index: 10000;
+    svg {
+        cursor: pointer;
+
+        path {
+            stroke: var(--gray3);
+        }
+    }
+}
+.empty {
+    font-style: italic;
+    color: var(--gray4);
+    font-weight: 500;
 }
 </style>
 

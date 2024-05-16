@@ -43,21 +43,21 @@ return new class extends Migration
                     "slug" => "lastname",
                     "type" => "text",
                     "hidden" => false,
-                    "multiple" => false
+                    "required" => true
                 ],
                 [
                     "name" => "Имя",
                     "slug" => "firstname",
                     "type" => "text",
                     "hidden" => false,
-                    "multiple" => false
+                    "required" => true
                 ],
                 [
                     "name" => "Отчество",
                     "slug" => "middlename",
                     "type" => "text",
                     "hidden" => false,
-                    "multiple" => false
+                    "required" => true
                 ]
             ])
         ];
