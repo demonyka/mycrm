@@ -1,24 +1,8 @@
 <template>
-    <Head :title="`Сотрудник «${user.fullname}»`"/>
+    <Head :title="`Редактирование сотрудника «${user.fullname}»`"/>
     <Sidebar :links="links">
         <Center>
             <Block class="block">
-                <div @click.stop class="actions">
-                    <svg @click="openActions()" width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M18 12H18.01M12 12H12.01M6 12H6.01M13 12C13 12.5523 12.5523 13 12 13C11.4477 13 11 12.5523 11 12C11 11.4477 11.4477 11 12 11C12.5523 11 13 11.4477 13 12ZM19 12C19 12.5523 18.5523 13 18 13C17.4477 13 17 12.5523 17 12C17 11.4477 17.4477 11 18 11C18.5523 11 19 11.4477 19 12ZM7 12C7 12.5523 6.55228 13 6 13C5.44772 13 5 12.5523 5 12C5 11.4477 5.44772 11 6 11C6.55228 11 7 11.4477 7 12Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    <transition name="fade">
-                        <div
-                            v-if="actionsOpened &&
-                            (($page.props.auth.user.permissions.includes('staff.delete') && user.status === 'active') || ($page.props.auth.user.permissions.includes('staff.restore') && user.status === 'dismiss') || $page.props.auth.user.permissions.includes('staff.edit'))"
-                            class="actions-buttons" ref="actions">
-                            <ActionEditButton :user_id="user.id"/>
-                            <ActionDismissRestoreButton :user="user"/>
-                        </div>
-                    </transition>
-                </div>
-
-
                 <img class="avatar" :alt="user.username"
                      :src="user.tpl_data && JSON.parse(user.tpl_data).avatar_path ? JSON.parse(user.tpl_data).avatar_path : '/assets/images/default_avatar.png'"
                      @error="$event.target.src = '/assets/images/default_avatar.png'"
@@ -27,21 +11,46 @@
                     <h2 class="title">{{ user.fullname }}</h2>
                     <span v-if="user.status !== 'active'" style="color: var(--red); font-size: 14px">Сотрудник уволен или удалён</span>
                 </div>
-                <div class="userdata">
+                <form @submit.prevent="formMainSubmit" class="userdata">
                     <div class="info-line">
                         <label>Логин: </label>
                         <div class="holder">{{ user.username || 'Отсутствует' }}</div>
                     </div>
                     <div class="info-line">
-                        <label>E-Mail: </label>
-                        <div class="holder">{{ user.email || 'Отсутствует' }}</div>
+                        <label>Пароль: </label>
+                        <div class="holder">
+                            <input
+                                type="password"
+                                v-model="formMain.password"
+                                :class="{ 'error': formMain.errors.password }"
+                            >
+                        </div>
                     </div>
                     <div class="info-line">
-                        <label>Роли: </label>
-                        <div class="holder empty" v-if="user.roles && user.roles.length === 0">Отсутствуют</div>
-                        <div class="holder" v-else>{{ user.roles.map(role => role.name).join(', ') }}</div>
+                        <label>Аватар: </label>
+                        <div class="holder">
+                            <input
+                                type="file"
+                                accept="image/png, image/jpeg"
+                                ref="avatarInput"
+                                :class="{ 'error': formMain.errors.avatar }"
+                                @change="handleAvatarChange"
+                            >
+                        </div>
                     </div>
-                </div>
+                    <button type="submit" style="margin-top: 10px" class="primary">Сохранить</button>
+                    <transition-group name="fade">
+                        <p class="error" style="margin-top: 10px" v-if="formMain.errors && formMain.errors.avatar">
+                            {{ formMain.errors.avatar }}
+                        </p>
+                        <p class="error" style="margin-top: 10px" v-if="formMain.errors && formMain.errors.password">
+                            {{ formMain.errors.password }}
+                        </p>
+                        <p class="success" style="margin-top: 10px" v-if="formMain.success">
+                            {{ formMain.success }}
+                        </p>
+                    </transition-group>
+                </form>
             </Block>
         </Center>
         <Center style="margin-top: 20px">
@@ -199,6 +208,7 @@
     }
     .info-line {
         display: flex;
+        align-items: center;
         justify-content: center;
         margin-bottom: 10px;
         position: relative;
@@ -214,6 +224,15 @@
             margin-left: 20px;
             display: flex;
             text-align: left;
+            input[type=password] {
+                outline: none;
+                border: 1px solid var(--gray4);
+                padding: 5px 10px;
+                border-radius: 5px;
+            }
+            input:focus {
+                border-color: var(--blue1);
+            }
         }
     }
     .empty {
@@ -221,53 +240,16 @@
         color: var(--gray4);
         font-weight: 500;
     }
-    .actions {
-        position: absolute;
-        right: 20px;
-        top: 20px;
-        svg {
-            cursor: pointer;
-            path {
-                stroke: var(--gray3);
-            }
-        }
-        .actions-buttons {
-            background: white;
-            position: absolute;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            left: -250%;
-            top: 50%;
-            transform: translate(50%, -50%);
-            cursor: default;
-            padding: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            svg {
-                cursor: pointer;
-            }
-            svg:hover {
-                path {
-                    stroke: var(--blue1);
-                }
-            }
-        }
-    }
 </style>
 
 <script>
-import {Head} from "@inertiajs/vue3";
+import {Head, useForm} from "@inertiajs/vue3";
 import Sidebar from "@/Layouts/Sidebar.vue";
 import Block from "@/Layouts/Block.vue";
 import Center from "@/Layouts/Center.vue";
-import ActionEditButton from "@/Pages/Staff/Elements/Actions/ActionEditButton.vue";
-import ActionDismissRestoreButton from "@/Pages/Staff/Elements/Actions/ActionDismissRestoreButton.vue";
 export default {
     name: "User",
     components: {
-        ActionDismissRestoreButton,
-        ActionEditButton,
         Center,
         Block,
         Sidebar,
@@ -276,7 +258,11 @@ export default {
     data() {
         return {
             tplData: this.user.tpl_data ? JSON.parse(this.user.tpl_data) : {},
-            actionsOpened: false
+            formMain: useForm({
+                _token: this.$page.props.csrf_token,
+                avatar: null,
+                password: ''
+            })
         }
     },
     props: [
@@ -284,16 +270,33 @@ export default {
         'user'
     ],
     methods: {
-        openActions() {
-            this.actionsOpened = true;
-            this.$nextTick(() => {
-                document.addEventListener('click', this.closeActions);
+        handleAvatarChange(event) {
+            const file = event.target.files[0];
+            if (file.size > 10 * 1024 * 1024) {
+                this.formMain.errors.avatar = 'Слишком большой файл';
+                return;
+            }
+            this.formMain.avatar = file;
+        },
+        formMainSubmit() {
+            this.formMain.post(route('staff.edit.main', {id: this.user.id}), {
+                onSuccess: (response) => {
+                    this.formMain.success = 'Информация обновлена'
+                    this.formMain.reset();
+                    this.$refs.avatarInput.value = '';
+                },
             });
         },
-        closeActions() {
-            this.actionsOpened = false;
-            document.removeEventListener('click', this.closeActions);
-        },
+    },
+    watch: {
+        'formMain.success': {
+            handler(newMessage) {
+                setTimeout(() => {
+                    this.formMain.success = null;
+                }, 5000);
+            },
+            deep: true
+        }
     }
 }
 </script>

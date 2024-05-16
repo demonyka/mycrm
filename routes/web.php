@@ -21,6 +21,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/list', [StaffController::class, 'listView'])->middleware('can:staff.view.list')->name('staff.view.list');
         Route::get('/list/dismiss', [StaffController::class, 'listDismissView'])->middleware('can:staff.view.dismiss')->name('staff.view.dismiss');
         Route::get('/user/{id}', [StaffController::class, 'userView'])->middleware('can:staff.view')->name('staff.view');
+        Route::get('/user/{id}/edit', [StaffController::class, 'userEditView'])->middleware('can:staff.edit')->name('staff.edit.view');
+        Route::post('/user/{id}/edit/main', [StaffController::class, 'editMain'])->middleware('can:staff.edit')->name('staff.edit.main');
+
         Route::get('/create', [StaffController::class, 'createView'])->middleware('can:staff.create')->name('staff.view.create');
         Route::post('/create', [StaffController::class, 'create'])->middleware('can:staff.create')->name('staff.create');
         Route::post('/delete/{id}', [StaffController::class, 'delete'])->middleware('can:staff.delete')->name('staff.delete');

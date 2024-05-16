@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
@@ -159,5 +160,24 @@ class User extends Authenticatable
             return ['id' => $position->id, 'name' => $position->name];
         });
         return $positions;
+    }
+
+    public function setAvatar($avatar): void
+    {
+        $filename = $this->username . '.' . $avatar->getClientOriginalExtension();
+        $avatar->storeAs('public/avatars/', $filename);
+        $avatarUrl = '/storage/avatars/' . $filename;
+        $this->setTplData('avatar_path', $avatarUrl);
+    }
+
+    public function setTplData(string $slug, $value): void
+    {
+        $tplData = json_decode($this->tpl_data, true);
+        if (!$tplData) {
+            $tplData = [];
+        }
+        $tplData[$slug] = $value;
+        $this->tpl_data = json_encode($tplData);
+        $this->save();
     }
 }

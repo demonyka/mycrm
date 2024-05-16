@@ -18,7 +18,7 @@ export default {
 <template>
     <div class="sidebar">
         <div style="width: 100%;">
-            <Link class="logo">
+            <Link :href="route('staff.view', {id: $page.props.auth.user.id})" class="logo">
                 <img :alt="$page.props.auth.user.username"
                      :src="$page.props.auth.user.tpl_data && JSON.parse($page.props.auth.user.tpl_data).avatar_path ? JSON.parse($page.props.auth.user.tpl_data).avatar_path : '/assets/images/default_avatar.png'"
                      @error="$event.target.src = '/assets/images/default_avatar.png'"
@@ -117,10 +117,6 @@ export default {
                 }
             }
         }
-    }
-    .content.mobile {
-        display: none;
-        padding: 20px !important;
     }
     body {
         overflow: hidden;

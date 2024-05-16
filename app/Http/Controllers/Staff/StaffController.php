@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Staff;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Staff\CreateStaffUserRequest;
+use App\Http\Requests\Staff\EditMainStaffUserRequest;
 use App\Models\Staff\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\RedirectResponse;
@@ -79,5 +81,25 @@ class StaffController extends Controller
         /* @var User $user */
         $user = User::withoutGlobalScope('work')->findOrFail($id)->append(['roles', 'positions']);
         return inertia('Staff/User', ['user' => $user, 'links' => $this->links]);
+    }
+    public function userEditView($id)
+    {
+        /* @var User $user */
+        $user = User::withoutGlobalScope('work')->findOrFail($id)->append(['roles', 'positions']);
+        return inertia('Staff/Edit', ['user' => $user, 'links' => $this->links]);
+    }
+
+    public function editMain($id, EditMainStaffUserRequest $request)
+    {
+        /* @var User $user */
+        $user = User::withoutGlobalScope('work')->findOrFail($id);
+        if ($request->has('password')) {
+            $user->password = Hash::make($request->password);
+            $user->save();
+        }
+        if ($request->hasFile('avatar')) {
+            $user->setAvatar($request->file('avatar'));
+        }
+        return redirect()->back();
     }
 }
