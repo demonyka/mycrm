@@ -108,7 +108,7 @@ export default {
             <td><span>{{ user.id }}</span></td>
             <td><span>{{ user.username }}</span></td>
             <td><span>{{ user.email }}</span></td>
-            <td v-for="(param, key) in settings" :style="{ 'display': param.status ? 'table-(cell' : 'none'}">
+            <td v-for="(param, key) in settings">
                 <span v-if="user[key] && user[key] !== user.username && !Array.isArray(user[key])">{{ user[key] }}</span>
                 <span v-else-if="user[key] && user[key] !== user.username && user[key][0] && user[key][0].name">{{ user[key].map(item => item.name).join(', ') }}</span>
                 <span v-else-if="user[key] && user[key] !== user.username">{{ user[key].join(', ') }}</span>
@@ -156,6 +156,7 @@ export default {
 .settings-buttons {
     background: white;
     position: absolute;
+    z-index: 10000;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     padding: 10px;

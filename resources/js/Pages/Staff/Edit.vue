@@ -190,7 +190,7 @@
         position: absolute;
         left: 20px;
         top: 20px;
-
+        z-index: 10000;
         svg {
             cursor: pointer;
 
