@@ -77,7 +77,7 @@ input.error {
 input.error::placeholder {
     color: var(--red);
 }
-button.primary {
+button.primary, button.secondary {
     background-color: var(--blue1);
     border: none;
     border-radius: 15px;
@@ -85,6 +85,11 @@ button.primary {
     padding: 10px 20px;
     cursor: pointer;
     outline: none;
+}
+button.secondary {
+    background-color: white;
+    border: 1px solid black;
+    color: black;
 }
 button:hover, a:hover {
     opacity: .7;

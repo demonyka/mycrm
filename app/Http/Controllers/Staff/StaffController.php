@@ -104,6 +104,18 @@ class StaffController extends Controller
         return redirect()->route('staff.template.view');
     }
 
+    public function deleteTemplate($id)
+    {
+        Template::findOrFail($id)->delete();
+        return redirect()->route('staff.template.view');
+    }
+
+    public function editTemplateView($id)
+    {
+        $template = Template::findOrFail($id);
+        return inertia('Staff/Template/Edit', ['links' => $this->links, 'template' => $template]);
+    }
+
     public function delete($id): RedirectResponse
     {
         $user = User::findOrFail($id);
