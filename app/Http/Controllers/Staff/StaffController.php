@@ -79,7 +79,7 @@ class StaffController extends Controller
     public function userView($id)
     {
         /* @var User $user */
-        $user = User::withoutGlobalScope('work')->findOrFail($id)->append(['roles', 'positions']);
+        $user = User::withoutGlobalScope('work')->findOrFail($id)->append(['roles', 'positions'])->load('template');
         return inertia('Staff/User', ['user' => $user, 'links' => $this->links]);
     }
     public function userEditView($id)

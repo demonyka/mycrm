@@ -44,120 +44,7 @@
                 </div>
             </Block>
         </Center>
-        <Center style="margin-top: 20px">
-            <Block class="block">
-                <h2 class="title">Основные данные</h2>
-                <div class="userdata" style="margin-top: 10px">
-                    <div class="info-line">
-                        <label>Фамилия: </label>
-                        <div class="holder" :class="{'empty': !tplData.lastname}">{{ tplData.lastname || 'Не указано' }}</div>
-                    </div>
-                    <div class="info-line">
-                        <label>Имя: </label>
-                        <div class="holder" :class="{'empty': !tplData.firstname}">{{ tplData.firstname || 'Не указано' }}</div>
-                    </div>
-                    <div class="info-line">
-                        <label>Отчество: </label>
-                        <div class="holder" :class="{'empty': !tplData.middlename}">{{ tplData.middlename || 'Не указано' }}</div>
-                    </div>
-                </div>
-                <div class="userdata">
-                    <div class="info-line">
-                        <label>Telegram: </label>
-                        <div class="holder" :class="{'empty': !tplData.telegram}">{{ tplData.telegram || 'Не указано' }}</div>
-                    </div>
-                    <div class="info-line">
-                        <label>Моб. телефон: </label>
-                        <div class="holder" :class="{'empty': !tplData.phone_number}">{{ tplData.phone_number || 'Не указано' }}</div>
-                    </div>
-                </div>
-                <div class="userdata">
-                    <div class="info-line">
-                        <label>Должность: </label>
-                        <div class="holder empty" v-if="user.positions && user.positions.length === 0">Отсутствует</div>
-                        <div class="holder" v-else>{{ user.positions.map(position => position.name).join(', ') }}</div>
-                    </div>
-                    <div class="info-line">
-                        <label>Дата приёма: </label>
-                        <div class="holder" :class="{'empty': !tplData.employment_date}">{{ tplData.employment_date || 'Не указано' }}</div>
-                    </div>
-                    <div class="info-line">
-                        <label>Начало рабочего дня: </label>
-                        <div class="holder" :class="{'empty': !tplData.work_start}">{{ tplData.work_start || 'Не указано' }}</div>
-                    </div>
-                    <div class="info-line">
-                        <label>Рабочий график: </label>
-                        <div class="holder" :class="{'empty': !tplData.work_schedule}">{{ tplData.work_schedule || 'Не указано' }}</div>
-                    </div>
-                    <div class="info-line">
-                        <label>Ставка: </label>
-                        <div class="holder" :class="{'empty': !tplData.work_rate}">{{ tplData.work_rate || 'Не указано' }}</div>
-                    </div>
-                </div>
-                <div class="userdata" style="margin-top: 10px">
-                    <div class="info-line">
-                        <label>Дата рождения: </label>
-                        <div class="holder" :class="{'empty': !tplData.birthday}">{{ tplData.birthday || 'Не указано' }}</div>
-                    </div>
-                    <div class="info-line">
-                        <label>Адрес регистрации: </label>
-                        <div class="holder" :class="{'empty': !tplData.address_reg}">{{ tplData.address_reg || 'Не указано' }}</div>
-                    </div>
-                    <div class="info-line">
-                        <label>Адрес проживания: </label>
-                        <div class="holder" :class="{'empty': !tplData.address_live}">{{ tplData.address_live || 'Не указано' }}</div>
-                    </div>
-                    <div class="info-line">
-                        <label>Серия и номер паспорта: </label>
-                        <div class="holder" :class="{'empty': !tplData.passport}">{{ tplData.passport || 'Не указано' }}</div>
-                    </div>
-                    <div class="info-line">
-                        <label>Кем выдан: </label>
-                        <div class="holder" :class="{'empty': !tplData.passport_by}">{{ tplData.passport_by || 'Не указано' }}</div>
-                    </div>
-                    <div class="info-line">
-                        <label>Код подразделения: </label>
-                        <div class="holder" :class="{'empty': !tplData.passport_code}">{{ tplData.passport_code || 'Не указано' }}</div>
-                    </div>
-                    <div class="info-line">
-                        <label>Дата выдачи: </label>
-                        <div class="holder" :class="{'empty': !tplData.passport_date}">{{ tplData.passport_date || 'Не указано' }}</div>
-                    </div>
-                    <div class="info-line">
-                        <label>ИНН: </label>
-                        <div class="holder" :class="{'empty': !tplData.inn}">{{ tplData.inn || 'Не указано' }}</div>
-                    </div>
-                    <div class="info-line">
-                        <label>СНИЛС: </label>
-                        <div class="holder" :class="{'empty': !tplData.snils}">{{ tplData.snils || 'Не указано' }}</div>
-                    </div>
-                    <div class="info-line">
-                        <label>Полис ДМС: </label>
-                        <div class="holder" :class="{'empty': !tplData.dms}">{{ tplData.dms || 'Не указано' }}</div>
-                    </div>
-                    <div class="info-line">
-                        <label>Водительское удостверение: </label>
-                        <div class="holder" :class="{'empty': !tplData.drive_license}">{{ tplData.drive_license || 'Не указано' }}</div>
-                    </div>
-                    <div class="info-line">
-                        <label>Семейное положение: </label>
-                        <div class="holder" :class="{'empty': !tplData.family_status}">{{ tplData.family_status || 'Не указано' }}</div>
-                    </div>
-                    <div class="info-line">
-                        <label>Сведения о супруге: </label>
-                        <div class="holder" :class="{'empty': !tplData.spouse_info}">{{ tplData.spouse_info || 'Не указано' }}</div>
-                    </div>
-                    <div class="info-line">
-                        <label>Сведения о детях: </label>
-                        <div class="holder" :class="{'empty': !tplData.children_info}">{{ tplData.children_info || 'Не указано' }}</div>
-                    </div>
-                    <div class="info-line">
-                        <label>Воинская обязанность: </label>
-                        <div class="holder" :class="{'empty': !tplData.army_duty}">{{ tplData.army_duty || 'Не указано' }}</div>
-                    </div>
-                </div>
-            </Block>
-        </Center>
+        <TemplateData style="margin-top: 20px" :data="tplData" :template="user.template"/>
     </Sidebar>
 </template>
 
@@ -263,9 +150,11 @@ import Block from "@/Layouts/Block.vue";
 import Center from "@/Layouts/Center.vue";
 import ActionEditButton from "@/Pages/Staff/Elements/Actions/ActionEditButton.vue";
 import ActionDismissRestoreButton from "@/Pages/Staff/Elements/Actions/ActionDismissRestoreButton.vue";
+import TemplateData from "@/Pages/Staff/Elements/TemplateData.vue";
 export default {
     name: "User",
     components: {
+        TemplateData,
         ActionDismissRestoreButton,
         ActionEditButton,
         Center,

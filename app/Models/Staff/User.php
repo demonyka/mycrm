@@ -2,7 +2,9 @@
 
 namespace App\Models\Staff;
 
+use App\Models\Template;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
@@ -18,6 +20,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $password
  * @property mixed $permissions
  * @property mixed $roles
+ * @property int $template_id
  */
 class User extends Authenticatable
 {
@@ -29,6 +32,7 @@ class User extends Authenticatable
         'email',
         'tpl_data',
         'password',
+        'template_id'
     ];
 
     protected $hidden = [
@@ -179,5 +183,10 @@ class User extends Authenticatable
         $tplData[$slug] = $value;
         $this->tpl_data = json_encode($tplData);
         $this->save();
+    }
+
+    public function template(): BelongsTo
+    {
+        return $this->belongsTo(Template::class);
     }
 }
