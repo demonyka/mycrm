@@ -285,12 +285,14 @@ export default {
         }
     },
     mounted() {
-        const fields = JSON.parse(this.user.template['fields']);
-        let data = {}; // Используем объект, а не массив
-        fields.forEach((field) => {
-            data[field.slug] = this.tplData[field.slug] || '';
-        });
-        this.formData = useForm(data);
+        if (this.user.template) {
+            const fields = JSON.parse(this.user.template['fields']);
+            let data = {};
+            fields.forEach((field) => {
+                data[field.slug] = this.tplData[field.slug] || '';
+            });
+            this.formData = useForm(data);
+        }
     }
 }
 </script>

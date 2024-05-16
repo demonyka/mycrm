@@ -7,10 +7,10 @@ use App\Http\Requests\Staff\CreateStaffUserRequest;
 use App\Http\Requests\Staff\EditMainStaffUserRequest;
 use App\Models\Staff\Template;
 use App\Models\Staff\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\RedirectResponse;
 
 class StaffController extends Controller
 {
@@ -33,12 +33,13 @@ class StaffController extends Controller
             ],
             [
                 'name' => 'Шаблоны данных',
-                'href' => '',
-                'is_active' => '',
-                'permission' => 'staff.templates.view'
+                'href' => route('staff.template.view'),
+                'is_active' => Route::is('staff.template.view'),
+                'permission' => 'staff.template.view'
             ]
         ];
     }
+
     public function listView()
     {
         $users = User::paginate(20);
@@ -47,6 +48,7 @@ class StaffController extends Controller
         });
         return inertia('Staff/List', ['users' => $users, 'links' => $this->links]);
     }
+
     public function listDismissView()
     {
         $users = User::withoutGlobalScope('work')->where('status', 'dismiss')->paginate(20);
@@ -55,10 +57,39 @@ class StaffController extends Controller
         });
         return inertia('Staff/DismissList', ['users' => $users, 'links' => $this->links]);
     }
+
     public function createView()
     {
         return inertia('Staff/Create', ['links' => $this->links]);
     }
+
+    public function userView($id)
+    {
+        /* @var User $user */
+        $user = User::withoutGlobalScope('work')->findOrFail($id)->append(['roles', 'positions'])->load('template');
+        if ($user->status === 'dismiss') {
+            $this->authorize('staff.view.dismiss');
+        }
+        return inertia('Staff/User', ['user' => $user, 'links' => $this->links]);
+    }
+
+    public function userEditView($id)
+    {
+        /* @var User $user */
+        $user = User::withoutGlobalScope('work')->findOrFail($id)->append(['roles', 'positions'])->load('template');
+        if ($user->status === 'dismiss') {
+            $this->authorize('staff.view.dismiss');
+        }
+        $templates = Template::all();
+        return inertia('Staff/Edit', ['user' => $user, 'links' => $this->links, 'templates' => $templates]);
+    }
+
+    public function templateListView()
+    {
+        $templates = Template::all();
+        return inertia('Staff/Templates/List', ['links' => $this->links, 'templates' => $templates]);
+    }
+
     public function delete($id): RedirectResponse
     {
         $user = User::findOrFail($id);
@@ -66,6 +97,7 @@ class StaffController extends Controller
         $user->save();
         return redirect()->back();
     }
+
     public function restore($id): RedirectResponse
     {
         $user = User::withoutGlobalScope('work')->findOrFail($id);
@@ -81,20 +113,6 @@ class StaffController extends Controller
             'password' => Hash::make($request->password),
         ]);
         return redirect()->route('staff.edit.view', ['id' => $user->id]);
-    }
-
-    public function userView($id)
-    {
-        /* @var User $user */
-        $user = User::withoutGlobalScope('work')->findOrFail($id)->append(['roles', 'positions'])->load('template');
-        return inertia('Staff/User', ['user' => $user, 'links' => $this->links]);
-    }
-    public function userEditView($id)
-    {
-        /* @var User $user */
-        $user = User::withoutGlobalScope('work')->findOrFail($id)->append(['roles', 'positions'])->load('template');
-        $templates = Template::all();
-        return inertia('Staff/Edit', ['user' => $user, 'links' => $this->links, 'templates' => $templates]);
     }
 
     public function edit($id, EditMainStaffUserRequest $request): RedirectResponse

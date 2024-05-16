@@ -105,7 +105,7 @@ export default {
                         loading="lazy">
                 </Link>
             </td>
-            <td><span>{{ user.id }}</span></td>
+            <td class="min"><span>{{ user.id }}</span></td>
             <td><span>{{ user.username }}</span></td>
             <td><span>{{ user.email }}</span></td>
             <td v-for="(param, key) in settings">
@@ -204,40 +204,6 @@ export default {
             }
         }
     }
-}
-table {
-    width: 100%;
-    min-width: 100%;
-    border-collapse: collapse;
-    padding: 40px 40px 40px 40px;
-    background-color: #ffffff;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    position: relative;
-    margin-bottom: 24px;
-    text-indent: initial;
-    border-spacing: 2px;
-}
-thead {
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-}
-tr {
-    display: table-row;
-    vertical-align: inherit;
-    unicode-bidi: isolate;
-    border-color: inherit;
-}
-table thead tr th {
-    color: var(--gray4);
-    padding: 16px;
-    font-weight: normal;
-    text-align: left;
-    border-bottom: 2px solid var(--gray5);
-}
-table tr td {
-    border-bottom: 1px solid var(--gray5);
-    padding: 20px 15px;
 }
 svg.settings {
     cursor: pointer;

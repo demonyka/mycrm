@@ -53,7 +53,7 @@ import {VueAwesomePaginate} from "vue-awesome-paginate";
 import Block from "@/Layouts/Block.vue";
 import Center from "@/Layouts/Center.vue";
 export default {
-    name: "Index",
+    name: "Create",
     components: {
         Center,
         Block,

@@ -18,19 +18,19 @@ return new class extends Migration
             ],
             [
                 'name' => 'Просмотр шаблонов сотрудников',
-                'permission' => 'staff.templates.view',
+                'permission' => 'staff.template.view',
             ],
             [
                 'name' => 'Редактирование шаблонов сотрудников',
-                'permission' => 'staff.templates.edit',
+                'permission' => 'staff.template.edit',
             ],
             [
                 'name' => 'Создание шаблонов сотрудников',
-                'permission' => 'staff.templates.create',
+                'permission' => 'staff.template.create',
             ],
             [
                 'name' => 'Удаление шаблонов сотрудников',
-                'permission' => 'staff.templates.delete',
+                'permission' => 'staff.template.delete',
             ],
         ];
         \DB::table('permissions')->insert($permissions);

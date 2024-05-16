@@ -17,18 +17,26 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [IndexController::class, 'view'])->name('index.view');
-    Route::prefix('staff')->middleware('can:staff')->group(function () {
+    Route::prefix('/staff')->middleware('can:staff')->group(function () {
         Route::get('/list', [StaffController::class, 'listView'])->middleware('can:staff.view.list')->name('staff.view.list');
         Route::get('/list/dismiss', [StaffController::class, 'listDismissView'])->middleware('can:staff.view.dismiss')->name('staff.view.dismiss');
-        Route::get('/user/{id}', [StaffController::class, 'userView'])->middleware('can:staff.view')->name('staff.view');
-        Route::get('/user/{id}/edit', [StaffController::class, 'userEditView'])->middleware('can:staff.edit')->name('staff.edit.view');
-        Route::post('/user/{id}/edit', [StaffController::class, 'edit'])->middleware('can:staff.edit')->name('staff.edit');
-        Route::post('/user/{id}/edit/tpl', [StaffController::class, 'editTpl'])->middleware('can:staff.edit')->name('staff.edit.tpl');
 
-        Route::get('/create', [StaffController::class, 'createView'])->middleware('can:staff.create')->name('staff.view.create');
-        Route::post('/create', [StaffController::class, 'create'])->middleware('can:staff.create')->name('staff.create');
-        Route::post('/delete/{id}', [StaffController::class, 'delete'])->middleware('can:staff.delete')->name('staff.delete');
-        Route::post('/restore/{id}', [StaffController::class, 'restore'])->middleware('can:staff.restore')->name('staff.restore');
+        Route::prefix('/user')->group(function () {
+            Route::get('/show/{id}', [StaffController::class, 'userView'])->middleware('can:staff.view')->name('staff.view');
+            Route::get('/edit/{id}', [StaffController::class, 'userEditView'])->middleware('can:staff.edit')->name('staff.edit.view');
+            Route::post('/edit/{id}', [StaffController::class, 'edit'])->middleware('can:staff.edit')->name('staff.edit');
+            Route::post('/edit_tpl/{id}', [StaffController::class, 'editTpl'])->middleware('can:staff.edit')->name('staff.edit.tpl');
+
+            Route::post('/delete/{id}', [StaffController::class, 'delete'])->middleware('can:staff.delete')->name('staff.delete');
+            Route::post('/restore/{id}', [StaffController::class, 'restore'])->middleware('can:staff.restore')->name('staff.restore');
+
+            Route::post('/create', [StaffController::class, 'create'])->middleware('can:staff.create')->name('staff.create');
+            Route::get('/create', [StaffController::class, 'createView'])->middleware('can:staff.create')->name('staff.view.create');
+        });
+
+        Route::prefix('/template')->group(function () {
+           Route::get('/list', [StaffController::class, 'templateListView'])->middleware('can:staff.template.view')->name('staff.template.view');
+        });
     });
 });
 
