@@ -10,7 +10,6 @@
                         </svg>
                     </Link>
                 </div>
-                <h2 class="title">Редактирование</h2>
                 <img class="avatar" :alt="user.username"
                      :src="user.tpl_data && JSON.parse(user.tpl_data).avatar_path ? JSON.parse(user.tpl_data).avatar_path : '/assets/images/default_avatar.png'"
                      @error="$event.target.src = '/assets/images/default_avatar.png'"
@@ -161,7 +160,7 @@
             input, select {
                 max-width: 100%;
             }
-            input[type=password], input[type=text] {
+            input[type=password], input[type=text], input[type=number] {
                 outline: none;
                 border: 1px solid var(--gray4);
                 padding: 5px 10px;

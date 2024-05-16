@@ -32,7 +32,7 @@ class StaffController extends Controller
                 'permission' => 'staff.view.dismiss'
             ],
             [
-                'name' => 'Шаблоны сотрудников',
+                'name' => 'Шаблоны данных',
                 'href' => '',
                 'is_active' => '',
                 'permission' => 'staff.templates.view'

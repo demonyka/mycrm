@@ -36,7 +36,7 @@ return new class extends Migration
         \DB::table('permissions')->insert($permissions);
 
         $staff_template = [
-            "name" => "Основной шаблон",
+            "name" => "Основные данные",
             "fields" => json_encode([
                 [
                     "name" => "Фамилия",
