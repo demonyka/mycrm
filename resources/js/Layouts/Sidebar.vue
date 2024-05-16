@@ -97,7 +97,7 @@ export default {
 
 <style scoped>
     .sidebar::-webkit-scrollbar {
-        width: 0px;
+        width: 0;
     }
     @media screen and (max-height: 700px) {
         svg {
@@ -116,6 +116,9 @@ export default {
                     font-size: 10px;
                 }
             }
+        }
+        .content {
+            padding: 20px !important;
         }
     }
     body {

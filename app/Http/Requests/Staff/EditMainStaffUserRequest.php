@@ -7,6 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * @property mixed avatar
  * @property string password
+ * @property int template_id
  */
 class EditMainStaffUserRequest extends FormRequest
 {
@@ -30,6 +31,7 @@ class EditMainStaffUserRequest extends FormRequest
         return [
             'avatar' => 'nullable|file|max:10240|mimes:jpeg,png',
             'password' => 'nullable|string|min:8|max:64',
+            'template_id' => 'nullable|integer'
         ];
     }
 }

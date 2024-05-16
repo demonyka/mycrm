@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Staff;
 
-use App\Models\Staff\Permission;
 use Illuminate\Database\Eloquent\Model;
 
 class Template extends Model
 {
-    protected $table = "templates";
+    protected $table = "staff_templates";
     protected $fillable = [
         'name',
         'fields',

@@ -44,7 +44,7 @@
                 </div>
             </Block>
         </Center>
-        <TemplateData style="margin-top: 20px" :data="tplData" :template="user.template"/>
+        <TemplateData v-if="user.template" style="margin-top: 20px" :data="tplData" :template="user.template"/>
     </Sidebar>
 </template>
 

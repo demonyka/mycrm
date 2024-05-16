@@ -17,24 +17,20 @@ return new class extends Migration
                 'permission' => 'staff.field.hidden',
             ],
             [
-                'name' => 'Раздел "Шаблоны"',
-                'permission' => 'templates',
+                'name' => 'Просмотр шаблонов сотрудников',
+                'permission' => 'staff.templates.view',
             ],
             [
-                'name' => 'Просмотр шаблонов',
-                'permission' => 'templates.view',
+                'name' => 'Редактирование шаблонов сотрудников',
+                'permission' => 'staff.templates.edit',
             ],
             [
-                'name' => 'Редактирование шаблонов',
-                'permission' => 'templates.edit',
+                'name' => 'Создание шаблонов сотрудников',
+                'permission' => 'staff.templates.create',
             ],
             [
-                'name' => 'Создание шаблонов',
-                'permission' => 'templates.create',
-            ],
-            [
-                'name' => 'Удаление шаблонов',
-                'permission' => 'templates.delete',
+                'name' => 'Удаление шаблонов сотрудников',
+                'permission' => 'staff.templates.delete',
             ],
         ];
         \DB::table('permissions')->insert($permissions);
@@ -45,28 +41,28 @@ return new class extends Migration
                 [
                     "name" => "Фамилия",
                     "slug" => "lastname",
-                    "type" => "string",
+                    "type" => "text",
                     "hidden" => false,
                     "multiple" => false
                 ],
                 [
                     "name" => "Имя",
                     "slug" => "firstname",
-                    "type" => "string",
+                    "type" => "text",
                     "hidden" => false,
                     "multiple" => false
                 ],
                 [
                     "name" => "Отчество",
                     "slug" => "middlename",
-                    "type" => "string",
+                    "type" => "text",
                     "hidden" => false,
                     "multiple" => false
                 ]
             ])
         ];
 
-        \DB::table('templates')->insert($staff_template);
+        \DB::table('staff_templates')->insert($staff_template);
     }
 
     /**
@@ -82,6 +78,6 @@ return new class extends Migration
             'templates.create',
             'templates.delete'
         ])->delete();
-        \DB::table('templates')->where('name', "Основные данные")->delete();
+        \DB::table('staff_templates')->where('name', "Основные данные")->delete();
     }
 };
