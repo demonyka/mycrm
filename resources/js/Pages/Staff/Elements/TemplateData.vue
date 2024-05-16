@@ -18,8 +18,8 @@ export default {
             <h2 class="title">{{ template.name }}</h2>
             <div class="userdata" style="margin-top: 10px">
                 <div v-for="(field, index) in JSON.parse(template['fields'])" class="info-line">
-                    <label>{{ field.name }}: </label>
-                    <div class="holder" :class="{'empty': !data[field.slug]}">{{ data[field.slug] || 'Не указано' }}</div>
+                    <label v-if="field.hidden ? $page.props.auth.user.permissions.includes('staff.template.edit') : true">{{ field.name }}: </label>
+                    <div v-if="field.hidden ? $page.props.auth.user.permissions.includes('staff.template.edit') : true" class="holder" :class="{'empty': !data[field.slug]}">{{ data[field.slug] || 'Не указано' }}</div>
                 </div>
             </div>
         </Block>
@@ -28,10 +28,6 @@ export default {
 
 <style scoped>
 @media screen and (max-width: 1000px) {
-    img.avatar {
-        width: 100px !important;
-        height: 100px !important;
-    }
     .block {
         width: 100% !important;
     }
@@ -43,21 +39,6 @@ export default {
 }
 .block {
     width: 40%;
-}
-img.avatar {
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 100%;
-}
-.fullname {
-    gap: 5px;
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    * {
-        width: 100%;
-    }
 }
 .userdata {
     width: 100%;
@@ -85,38 +66,5 @@ img.avatar {
     font-style: italic;
     color: var(--gray4);
     font-weight: 500;
-}
-.actions {
-    position: absolute;
-    right: 20px;
-    top: 20px;
-    svg {
-        cursor: pointer;
-        path {
-            stroke: var(--gray3);
-        }
-    }
-    .actions-buttons {
-        background: white;
-        position: absolute;
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-        border-radius: 10px;
-        left: -250%;
-        top: 50%;
-        transform: translate(50%, -50%);
-        cursor: default;
-        padding: 10px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        svg {
-            cursor: pointer;
-        }
-        svg:hover {
-            path {
-                stroke: var(--blue1);
-            }
-        }
-    }
 }
 </style>

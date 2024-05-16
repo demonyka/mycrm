@@ -36,6 +36,8 @@ Route::middleware('auth')->group(function () {
 
         Route::prefix('/template')->group(function () {
            Route::get('/list', [StaffController::class, 'templateListView'])->middleware('can:staff.template.view')->name('staff.template.view');
+           Route::get('/create', [StaffController::class, 'createTemplateView'])->middleware('can:staff.template.create')->name('staff.template.create.view');
+           Route::post('/create', [StaffController::class, 'createTemplate'])->middleware('can:staff.template.create')->name('staff.template.create');
         });
     });
 });

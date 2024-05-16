@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Staff;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Staff\CreateStaffUserRequest;
 use App\Http\Requests\Staff\EditMainStaffUserRequest;
+use App\Http\Requests\Staff\Template\CreateStaffTemplateRequest;
 use App\Models\Staff\Template;
 use App\Models\Staff\User;
 use Illuminate\Http\RedirectResponse;
@@ -87,7 +88,20 @@ class StaffController extends Controller
     public function templateListView()
     {
         $templates = Template::all();
-        return inertia('Staff/Templates/List', ['links' => $this->links, 'templates' => $templates]);
+        return inertia('Staff/Template/List', ['links' => $this->links, 'templates' => $templates]);
+    }
+
+    public function createTemplateView()
+    {
+        return inertia('Staff/Template/Create', ['links' => $this->links]);
+    }
+
+    public function createTemplate(CreateStaffTemplateRequest $request)
+    {
+        $template = Template::create([
+            'name' => $request->name,
+        ]);
+        return redirect()->route('staff.template.view');
     }
 
     public function delete($id): RedirectResponse

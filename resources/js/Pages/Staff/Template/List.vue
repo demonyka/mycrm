@@ -2,7 +2,7 @@
     <Head title="Шаблоны данных"/>
     <Sidebar :links="links">
         <div v-if="$page.props.auth.user.permissions.includes('staff.template.create')" style="margin-bottom: 20px">
-            <button v-if="$page.props.auth.user.permissions.includes('staff.template.create')" class="primary">Новый шаблон</button>
+            <button @click="$inertia.visit(route('staff.template.create.view'))" v-if="$page.props.auth.user.permissions.includes('staff.template.create')" class="primary">Новый шаблон</button>
         </div>
         <table>
             <thead>

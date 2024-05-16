@@ -14,6 +14,9 @@
                             @focus="form.errors.username = null"
                         >
                     </div>
+                    <transition name="fade">
+                        <p v-if="form.errors.username" class="error">{{ form.errors.username }}</p>
+                    </transition>
                     <div class="form-input">
                         <input
                             v-model="form.password"
@@ -32,10 +35,10 @@
                             <path d="M12.0012 5C7.52354 5 3.73326 7.94288 2.45898 12C3.73324 16.0571 7.52354 19 12.0012 19C16.4788 19 20.2691 16.0571 21.5434 12C20.2691 7.94291 16.4788 5 12.0012 5Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </div>
-                    <button class="primary" type="submit">Добавить</button>
                     <transition name="fade">
-                        <p v-if="form.errors.username" class="error">{{ form.errors.username }}</p>
+                        <p v-if="form.errors.password" class="error">{{ form.errors.password }}</p>
                     </transition>
+                    <button class="primary" type="submit">Добавить</button>
                 </form>
             </Block>
         </Center>

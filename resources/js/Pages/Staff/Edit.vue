@@ -73,8 +73,8 @@
                 <h2 class="title">{{ user.template.name }}</h2>
                 <form @submit.prevent="formDataSubmit" class="userdata" style="margin-top: 10px">
                     <div v-for="(field, index) in JSON.parse(user.template['fields'])" class="info-line">
-                        <label>{{ field.name }}: </label>
-                        <div class="holder">
+                        <label v-if="field.hidden ? $page.props.auth.user.permissions.includes('staff.template.edit') : true">{{ field.name }}: </label>
+                        <div v-if="field.hidden ? $page.props.auth.user.permissions.includes('staff.template.edit') : true" class="holder">
                             <input
                                 :placeholder="field.name"
                                 :type="field.type"
@@ -253,7 +253,7 @@ export default {
             this.formMain.post(route('staff.edit', {id: this.user.id}), {
                 onSuccess: () => {
                     this.formMain.success = 'Информация обновлена'
-                    this.formMain.reset();
+                    this.formMain.reset('password', 'avatar');
                     this.$refs.avatarInput.value = '';
                 },
             });

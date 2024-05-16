@@ -11,4 +11,5 @@ class Template extends Model
         'name',
         'fields',
     ];
+    public $timestamps = false;
 }
