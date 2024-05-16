@@ -10,22 +10,13 @@ export default {
     ],
     data() {
         return {
-            sidebarClosed: false
         }
     },
-    watch: {
-        sidebarClosed(newValue) {
-            localStorage.setItem('sidebarClosed', newValue);
-        }
-    },
-    mounted() {
-        this.sidebarClosed = JSON.parse(localStorage.getItem('sidebarClosed')) || false;
-    }
 }
 </script>
 
 <template>
-    <div class="sidebar" :class="{'closed': sidebarClosed}">
+    <div class="sidebar">
         <div style="width: 100%;">
             <Link class="logo">
                 <img :alt="$page.props.auth.user.username"
@@ -95,17 +86,9 @@ export default {
         </div>
     </div>
     <div class="topbar">
-        <div v-if="sidebarClosed" class="sidebar-opener">
-            <svg @click="sidebarClosed = false" style="width: 32px; height: 32px" width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M4 6H20M4 12H14M4 18H9" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-        </div>
         <div class="topbar-content">
             <Link v-for="link in links" :key="link.href" :href="link.href" :class="{ 'active': link.is_active }" :style="{ 'display': link.permission ? !$page.props.auth.user.permissions.includes(link.permission) ? 'none' : 'flex' : 'flex' }">{{ link.name }}</Link>
         </div>
-    </div>
-    <div @click="sidebarClosed = true" class="content mobile">
-        <slot/>
     </div>
     <div class="content">
         <slot/>
@@ -134,12 +117,6 @@ export default {
                 }
             }
         }
-        .content.mobile {
-            display: initial !important;
-        }
-        .content {
-            display: none;
-        }
     }
     .content.mobile {
         display: none;
@@ -147,16 +124,6 @@ export default {
     }
     body {
         overflow: hidden;
-    }
-    .sidebar.closed {
-        left: -100%;
-    }
-    .sidebar.closed ~ .topbar {
-        width: 100%;
-    }
-    .sidebar.closed ~ .content {
-        left: 0;
-        width: 100%;
     }
     .sidebar {
         position: fixed;
