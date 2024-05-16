@@ -211,11 +211,10 @@ import Sidebar from "@/Layouts/Sidebar.vue";
 import Block from "@/Layouts/Block.vue";
 import Center from "@/Layouts/Center.vue";
 import ActionEditButton from "@/Pages/Staff/Elements/Actions/ActionEditButton.vue";
-import ActionDismissRestoreButton from "@/Pages/Staff/Elements/Actions/ActionDismissRestoreButton.vue";
 export default {
     name: "User",
     components: {
-        ActionDismissRestoreButton, ActionEditButton,
+        ActionEditButton,
         Center,
         Block,
         Sidebar,
