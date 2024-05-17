@@ -182,14 +182,14 @@ class StaffController extends Controller
             'required' => $request->required,
         ];
         $template->addField($field);
-        return redirect()->back();
     }
 
     public function editTemplateDeleteField($id, Request $request)
     {
+        $slug = $request->input('slug');
         /* @var Template $template */
         $template = Template::findOrFail($id);
-        $template->deleteField($request->slug);
+        $template->deleteField($slug);
         return redirect()->back();
     }
 

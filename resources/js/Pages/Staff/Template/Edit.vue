@@ -98,6 +98,11 @@
                     <button class="primary" type="submit">
                         Сохранить
                     </button>
+                    <transition name="fade">
+                        <p class="success" v-if="form.success">
+                            {{ form.success }}
+                        </p>
+                    </transition>
                 </form>
             </Block>
         </Center>
@@ -113,6 +118,7 @@
                                 <input
                                     placeholder="Название"
                                     v-model="formNew.name"
+                                    required
                                     :class="{'error': formNew.errors.name}"
                                     @focus="formNew.errors.name = null"
                                     type="text"
@@ -125,6 +131,7 @@
                                 <input
                                     placeholder="Slug"
                                     v-model="formNew.slug"
+                                    required
                                     :class="{'error': formNew.errors.slug}"
                                     @focus="formNew.errors.slug = null"
                                     type="text"
@@ -187,6 +194,9 @@
                         </div>
                         <transition-group name="fade">
                             <p v-for="error in formNew.errors" class="error">{{ error }}</p>
+                            <p class="success" v-if="form.success">
+                                {{ form.success }}
+                            </p>
                         </transition-group>
                     </div>
                     <button class="primary" type="submit">
@@ -339,30 +349,56 @@ export default {
                 type: 'text',
                 hidden: false,
                 required: false,
+            }),
+            formDelete: useForm({
+                slug: ''
             })
         }
     },
     methods: {
         formNewSubmit() {
-            this.formNew.clearErrors();
             this.formNew.post(route('staff.template.edit.field.add', {id: this.template.id}), {
-                onSuccess: () => window.location.reload()
+                preserveScroll: true,
+                onSuccess: (response) => {
+                    this.template.fields = response.props.template.fields;
+                    this.form = useForm(JSON.parse(this.template.fields));
+                    this.formNew.reset();
+                    this.form.success = "Шаблон успешно обновлён";
+                }
             });
         },
         deleteField(slug) {
-            const formData = new FormData();
-            formData.append('slug', slug);
-
-            axios.post(route('staff.template.edit.field.delete', {id: this.template.id}), formData)
-                .then((response) => {
-                    window.location.reload();
-                })
+            this.formDelete.slug = slug;
+            this.formDelete.post(route('staff.template.edit.field.delete', {id: this.template.id}), {
+                preserveScroll: true,
+                onSuccess: (response) => {
+                    this.form.success = "Шаблон успешно обновлён";
+                    this.template.fields = response.props.template.fields;
+                    this.form = useForm(JSON.parse(this.template.fields));
+                    this.formDelete.reset();
+                }
+            });
         },
         formEditSubmit() {
             this.form.post(route('staff.template.edit.field', {id: this.template.id}), {
-                onSuccess: () => window.location.reload()
+                preserveScroll: true,
+                onSuccess: (response) => {
+                    this.template.fields = response.props.template.fields
+                    this.form = useForm(JSON.parse(this.template.fields));
+                    this.form.success = "Шаблон успешно обновлён";
+                }
             });
         }
-    }
+    },
+    watch: {
+        'form.success': {
+            handler() {
+                setTimeout(() => {
+                    this.form.success = null;
+                }, 5000);
+            },
+            deep: true
+        },
+    },
 }
 </script>
