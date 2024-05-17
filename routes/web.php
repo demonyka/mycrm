@@ -40,7 +40,9 @@ Route::middleware('auth')->group(function () {
            Route::post('/create', [StaffController::class, 'createTemplate'])->middleware('can:staff.template.create')->name('staff.template.create');
            Route::post('/delete/{id}', [StaffController::class, 'deleteTemplate'])->middleware('can:staff.template.delete')->name('staff.template.delete');
            Route::get('/edit/{id}', [StaffController::class, 'editTemplateView'])->middleware('can:staff.template.edit')->name('staff.template.edit.view');
-           Route::post('/edit/{id}/add_field', [StaffController::class, 'editTemplateAddField'])->middleware('can:staff.template.edit')->name('staff.template.edit.add_field');
+           Route::post('/edit/{id}/field/add', [StaffController::class, 'editTemplateAddField'])->middleware('can:staff.template.edit')->name('staff.template.edit.field.add');
+           Route::post('/edit/{id}/field/delete', [StaffController::class, 'editTemplateDeleteField'])->middleware('can:staff.template.edit')->name('staff.template.edit.field.delete');
+
         });
     });
 });

@@ -78,6 +78,7 @@
                             <input
                                 :placeholder="field.name"
                                 :type="field.type"
+                                :required="field.required"
                                 v-model="formData[field.slug]"
                                 :class="{ 'error': formData.errors[field.slug] }"
                             >

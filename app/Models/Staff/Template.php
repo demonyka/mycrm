@@ -19,4 +19,16 @@ class Template extends Model
         $fields[] = $field;
         $this->update(['fields' => $fields]);
     }
+
+    public function deleteField($slug)
+    {
+        $fields = json_decode($this->fields, true);
+        foreach ($fields as $key => $field) {
+            if ($slug == $field['slug']) {
+                unset($fields[$key]);
+                $this->update(['fields' => json_encode($fields)]);
+                break;
+            }
+        }
+    }
 }
