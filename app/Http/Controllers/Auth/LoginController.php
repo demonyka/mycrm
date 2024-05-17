@@ -14,12 +14,7 @@ class LoginController extends Controller
 {
     public function view(Request $request)
     {
-        /* @var User $user */
-        $user = User::find(Cookie::get('user_id'));
-        if ($user) {
-            $user = $user->minimum();
-        }
-        return inertia('Auth/Login', ['user' => $user]);
+        return inertia('Auth/Login');
     }
 
     public function store(LoginRequest $request): RedirectResponse

@@ -3,14 +3,8 @@
     <Center>
         <Block>
             <LogoTitle title="Login"/>
-            <div class="user-info">
-                <h4 v-if="$page.props.user" class="title">С возращением, {{ $page.props.user.firstname }}</h4>
-                <img class="user-avatar" v-if="user" :alt="user.username"
-                     :src="user.avatar_path ? user.avatar_path : '/assets/images/default_avatar.png'"
-                     @error="$event.target.src = '/assets/images/default_avatar.png'">
-            </div>
             <form @submit.prevent="formSubmit" class="validation">
-                <div v-if="!$page.props.user" class="form-input">
+                <div class="form-input">
                     <input
                         v-model="form.username"
                         required
@@ -36,11 +30,10 @@
                         <path d="M12.0012 5C7.52354 5 3.73326 7.94288 2.45898 12C3.73324 16.0571 7.52354 19 12.0012 19C16.4788 19 20.2691 16.0571 21.5434 12C20.2691 7.94291 16.4788 5 12.0012 5Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </div>
-                <button class="primary" type="submit">Войти</button>
                 <transition name="fade">
                     <p v-if="form.errors.password ?? form.errors.username" class="error">{{ form.errors.password || form.errors.username }}</p>
                 </transition>
-                <a v-if="$page.props.user" @click="deleteCookie('user_id')">Войти в другой аккаунт</a>
+                <button class="primary" type="submit">Войти</button>
             </form>
         </Block>
     </Center>
@@ -64,39 +57,22 @@ export default {
         return {
             form: useForm({
                 _token: this.$page.props.csrf_token,
-                username: this.$page.props.user && this.$page.props.user.username || '',
+                username: '',
                 password: ''
             }),
             isPasswordShow: false,
         }
     },
-    props: [
-        'user'
-    ],
     methods: {
         formSubmit() {
             this.form.post(route('auth.login.store'), {
                 onError: () => this.form.reset('password'),
             });
         },
-        deleteCookie(name) {
-            document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-            location.reload();
-        }
     }
 }
 </script>
 
 <style scoped>
-    .user-info {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        img.user-avatar {
-            width: 24px;
-            height: 24px;
-            object-fit: cover;
-            border-radius: 100%;
-        }
-    }
+
 </style>
