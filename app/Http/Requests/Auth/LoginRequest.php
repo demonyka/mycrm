@@ -58,11 +58,6 @@ class LoginRequest extends FormRequest
         }
 
         RateLimiter::clear($this->throttleKey());
-
-        /* @var User $user*/
-        $user = auth()->user();
-
-        Cookie::queue('user_id', $user->id, 1440, '/', null, false, false);
     }
 
     /**

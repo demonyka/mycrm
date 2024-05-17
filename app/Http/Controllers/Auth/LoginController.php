@@ -35,8 +35,6 @@ class LoginController extends Controller
 
         $request->session()->regenerateToken();
 
-        Cookie::queue(Cookie::forget('user_id'));
-
         return redirect()->route('auth.login.view');
     }
 }
