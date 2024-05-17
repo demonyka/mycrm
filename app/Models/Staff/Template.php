@@ -4,6 +4,11 @@ namespace App\Models\Staff;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property mixed $fields
+ */
 class Template extends Model
 {
     protected $table = "staff_templates";

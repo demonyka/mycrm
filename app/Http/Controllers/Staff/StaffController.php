@@ -192,4 +192,13 @@ class StaffController extends Controller
         $template->deleteField($request->slug);
         return redirect()->back();
     }
+
+    public function editTemplateFields($id, Request $request)
+    {
+        /* @var Template $template */
+        $template = Template::findOrFail($id);
+        $template->fields = $request->all();
+        $template->save();
+        return redirect()->back();
+    }
 }

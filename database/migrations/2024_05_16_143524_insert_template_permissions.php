@@ -57,7 +57,7 @@ return new class extends Migration
                     "slug" => "middlename",
                     "type" => "text",
                     "hidden" => false,
-                    "required" => true
+                    "required" => false
                 ]
             ])
         ];
