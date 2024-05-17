@@ -96,7 +96,100 @@
                         </div>
                     </div>
                 </form>
+            </Block>
+        </Center>
 
+        <Center style="margin-top: 20px">
+            <Block>
+                <h2 class="title">Новое поле</h2>
+                <form @submit.prevent="formNewSubmit" style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 10px">
+                    <div class="userdata">
+                        <div class="info-line">
+                            <label>Название:</label>
+                            <div class="holder">
+                                <input
+                                    placeholder="Название"
+                                    v-model="formNew.name"
+                                    :class="{'error': formNew.errors.name}"
+                                    @focus="formNew.errors.name = null"
+                                    type="text"
+                                >
+                            </div>
+                        </div>
+                        <div class="info-line">
+                            <label>Slug:</label>
+                            <div class="holder">
+                                <input
+                                    placeholder="Slug"
+                                    v-model="formNew.slug"
+                                    :class="{'error': formNew.errors.slug}"
+                                    @focus="formNew.errors.slug = null"
+                                    type="text"
+                                >
+                            </div>
+                        </div>
+                        <div class="info-line">
+                            <label>Тип:</label>
+                            <div class="holder">
+                                <select v-model="formNew.type">
+                                    <option v-for="type in types" :value="type.type">{{ type.name }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="info-line">
+                            <label>Скрытое:</label>
+                            <div class="holder">
+                                <div style="display: flex; align-items: center; gap: 5px">
+                                    <input
+                                        style="margin: 0"
+                                        type="radio"
+                                        v-model="formNew.hidden"
+                                        value="true"
+                                    >
+                                    <span>Да</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 5px">
+                                    <input
+                                        style="margin: 0"
+                                        type="radio"
+                                        v-model="formNew.hidden"
+                                        value="false"
+                                    >
+                                    <span>Нет</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info-line">
+                            <label>Обязательное:</label>
+                            <div class="holder">
+                                <div style="display: flex; align-items: center; gap: 5px">
+                                    <input
+                                        style="margin: 0"
+                                        type="radio"
+                                        v-model="formNew.required"
+                                        value="true"
+                                    >
+                                    <span>Да</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 5px">
+                                    <input
+                                        style="margin: 0"
+                                        type="radio"
+                                        v-model="formNew.required"
+                                        value="false"
+                                    >
+                                    <span>Нет</span>
+                                </div>
+                            </div>
+                        </div>
+                        <transition-group name="fade">
+                            <p v-for="error in formNew.errors" class="error">{{ error }}</p>
+                        </transition-group>
+                    </div>
+                    <button class="primary" type="submit">
+                        Добавить
+                    </button>
+                </form>
             </Block>
         </Center>
     </Sidebar>
@@ -236,7 +329,22 @@ export default {
                 {'name': 'Строка', type: 'text'},
                 {'name': 'Число', type: 'number'}
             ],
-            form: useForm(JSON.parse(this.template.fields))
+            form: useForm(JSON.parse(this.template.fields)),
+            formNew: useForm({
+                name: '',
+                slug: '',
+                type: 'text',
+                hidden: false,
+                required: false,
+            })
+        }
+    },
+    methods: {
+        formNewSubmit() {
+            this.formNew.clearErrors();
+            this.formNew.post(route('staff.template.edit.add_field', {id: this.template.id}), {
+                onSuccess: () => window.location.reload()
+            });
         }
     }
 }

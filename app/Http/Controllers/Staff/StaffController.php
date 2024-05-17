@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Staff;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Staff\CreateStaffUserRequest;
 use App\Http\Requests\Staff\EditMainStaffUserRequest;
+use App\Http\Requests\Staff\Template\AddFieldTemplateRequest;
 use App\Http\Requests\Staff\Template\CreateStaffTemplateRequest;
 use App\Models\Staff\Template;
 use App\Models\Staff\User;
@@ -161,12 +162,26 @@ class StaffController extends Controller
     public function editTpl($id, Request $request)
     {
         /* @var User $user */
-
         $user = User::withoutGlobalScope('work')->findOrFail($id);
         $data = $request->all();
         foreach ($data as $key => $value) {
             $user->setTplData($key, $value);
         }
+        return redirect()->back();
+    }
+
+    public function editTemplateAddField($id, AddFieldTemplateRequest $request)
+    {
+        /* @var Template $template */
+        $template = Template::findOrFail($id);
+        $field = [
+            'name' => $request->name,
+            'slug' => $request->slug,
+            'type' => $request->type,
+            'hidden' => $request->hidden,
+            'required' => $request->required,
+        ];
+        $template->addField($field);
         return redirect()->back();
     }
 }

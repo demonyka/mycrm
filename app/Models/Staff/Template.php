@@ -12,4 +12,11 @@ class Template extends Model
         'fields',
     ];
     public $timestamps = false;
+
+    public function addField(array $field)
+    {
+        $fields = json_decode($this->fields, true);
+        $fields[] = $field;
+        $this->update(['fields' => $fields]);
+    }
 }
